@@ -12,10 +12,9 @@ class BrFS:
         # initialize root node
         self.root : Node = Node()
         self.root.state = self.problem.initial_state
-        # print('init:\n' + str(self.root.state))
-        print('init:\n' + Problem.print_state(self.root.state))
 
         #initialize frontier and explored (both unique)
+        
         self.qFrontier: Queue = Queue()
         self.explored: dict = dict()
         # gen frontier
