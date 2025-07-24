@@ -4,7 +4,8 @@ from ProblemTest import Problem
 from collections import deque
 
 class DpFS:
-    def __init__(self, problem: Problem):      
+    def __init__(self, problem: Problem):
+        super().__init__()
         # initialize a new random puzzle
         self.problem : Problem = problem
         self.solution: str = self.problem.solution_state
@@ -44,7 +45,7 @@ class DpFS:
                 print('action: ' + str(n.action.__name__) + '\n' + Problem.print_state(n.state))
 
     
-    def depthFirstSearch(self) -> Node | None:
+    def search(self) -> Node | None:
         '''
         Function GRAPH-SEARCH (problem) returns a solution, or failure
         initialize the frontier using the initial state of problem

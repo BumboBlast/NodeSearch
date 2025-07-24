@@ -2,9 +2,11 @@
 from ChildNodeTest import Node
 from ProblemTest import Problem
 from queue import Queue
+from Solver import Solver
 
-class BrFS:
-    def __init__(self, problem: Problem):      
+class BrFS(Solver):
+    def __init__(self, problem: Problem):
+        super().__init__()
         # initialize a new random puzzle
         self.problem : Problem = problem
         self.solution: str = self.problem.solution_state
@@ -43,7 +45,7 @@ class BrFS:
                 print('action: ' + str(n.action.__name__) + '\n' + Problem.print_state(n.state))
 
     
-    def breastFirstSearch(self) -> Node | None:
+    def search(self) -> Node | None:
         '''
         Function GRAPH-SEARCH (problem) returns a solution, or failure
         initialize the frontier using the initial state of problem
