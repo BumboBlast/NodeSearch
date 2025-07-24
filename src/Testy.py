@@ -1,39 +1,64 @@
 
 
 from ChildNodeTest import Node
-from ProblemTest import EightPuzzle
+from ProblemTest import EightPuzzle, Problem
 from SearchBreadthFirst import BrFS
 from SearchDepthFirst import DpFS
-# import queue
+from MemoryTracking import track
+
+import sys
 
 print('(:')
 
 ''' puzzles '''
-# newEightPuzzle : EightPuzzle = EightPuzzle('123456780')
-# newEightPuzzle : EightPuzzle = EightPuzzle('876543210')
-# newEightPuzzle : EightPuzzle = EightPuzzle('102345678')
-# newEightPuzzle : EightPuzzle = EightPuzzle('376041825') # impossible to solve, odd # of inversions
-# newEightPuzzle : EightPuzzle = EightPuzzle('402176583') # impossible to solve, odd # of inversions
-newEightPuzzle : EightPuzzle = EightPuzzle('327615084') # a very long solution
-# newEightPuzzle : EightPuzzle = EightPuzzle() # random puzzle
+def getSomePuzzles() -> list:
+    puzzleList : list = list()
+    puzzleList.append(EightPuzzle('123456780'))
+    puzzleList.append(EightPuzzle('876543210'))
+    puzzleList.append(EightPuzzle('102345678'))
+    puzzleList.append(EightPuzzle('376041825')) # impossible to solve, odd # of inversions
+    puzzleList.append(EightPuzzle('402176583')) # impossible to solve, odd # of inversions
+    puzzleList.append(EightPuzzle('327615084')) # a very long solution
+    puzzleList.append(EightPuzzle()) # random puzzle
+    return puzzleList
 
 ''' set up solver object(s) '''
-newEightPuzzle.solution_state = '012345678'
-BrFSsolver: BrFS = BrFS(newEightPuzzle)
-DpFSsolver:  DpFS = DpFS(newEightPuzzle)
+def getSolverObjects(problem: Problem) -> dict:
+    problem.solution_state = '012345678'
+    BrFSsolver: BrFS = BrFS(problem)
+    DpFSsolver:  DpFS = DpFS(problem)
+    return {
+        'BrFS' : BrFSsolver,
+        'DpFS' : DpFSsolver
+    }
+
+@track
+def solveThePuzzle(solver: object, problem: Problem) -> Node:
+    ''' Returns the solution Node.
+    '''    
+    print('init:\n' + EightPuzzle.print_state(problem.initial_state))
+    print('solvable: ' + str(problem.is_solvable()))
+
+    # solution_node : Node = solver.breastFirstSearch()
+    solution_node : Node = solver.depthFirstSearch()
+    return solution_node
+
+def printSolution(solution_node: Node, max_solution_length: int):
+    if solution_node:
+        solution_chain: list = Node.getNodeChainIterative(solution_node, short=True)
+        print('solution chain is ' + str(len(solution_chain)) + ' nodes')
+        if len(solution_chain) < max_solution_length:
+            for n in solution_chain[::-1]:
+                print(str(n))
+        else:
+            print('solution too long to print')
+    else:
+        print('no solution ):')
 
 
-''' solve the puzzle '''
-print('init:\n' + EightPuzzle.print_state(newEightPuzzle.initial_state))
-print('solvable: ' + str(newEightPuzzle.is_solvable()))
-
-# solution_node : Node = BrFSsolver.breastFirstSearch()
-solution_node : Node = DpFSsolver.depthFirstSearch()
-
-if solution_node:
-    solution_chain: list = Node.getNodeChainIterative(solution_node, short=True)
-    print('solution chain is ' + str(len(solution_chain)) + ' nodes')
-    # for n in solution_chain[::-1]:
-        # print(str(n))
-else:
-    print('no solution ):')
+if __name__ == '__main__':
+    problem: EightPuzzle = getSomePuzzles()[0]
+    # solver : object = getSolverObjects(problem)['BrFS']
+    solver : object = getSolverObjects(problem)['DpFS']
+    solution_node : Node = solveThePuzzle(solver, problem)
+    # printSolution(solution_node, 60)

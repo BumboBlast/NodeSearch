@@ -5,7 +5,6 @@ from queue import Queue
 
 class BrFS:
     def __init__(self, problem: Problem):      
-        print('Breadth First: (:')
         # initialize a new random puzzle
         self.problem : Problem = problem
         self.solution: str = self.problem.solution_state
@@ -57,6 +56,8 @@ class BrFS:
         expand the chosen node, adding the resulting nodes to the frontier
         only if not in the frontier or explored set
         '''
+        print('Breadth First: (:')
+
         # check if this is solvable
         if not self.problem.is_solvable():
             return None
@@ -87,5 +88,5 @@ class BrFS:
             # only if not in the frontier or explored set (coverd in genFrontier)
             self.expandFrontier(chosenLeaf)
             
-            # if self.qFrontier.qsize() % 256 == 0:
-            print('size of frontier: ' + str(self.qFrontier.qsize()), end='\r')
+            if self.qFrontier.qsize() % 1_000 == 0:
+                print('size of frontier: ' + str(self.qFrontier.qsize()), end='\r')

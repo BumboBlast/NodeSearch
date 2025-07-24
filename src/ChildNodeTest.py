@@ -62,7 +62,7 @@ class Node:
         until root (no parent).
         '''
         orderedNodeChain: list = list()
-        for __ in range(0, 90000):
+        for __ in range(0, 100_000):
             if myNode.action:
                 orderedNodeChain.append({myNode.state : myNode.action.__name__})
             else:

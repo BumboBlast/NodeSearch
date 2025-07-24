@@ -5,7 +5,6 @@ from collections import deque
 
 class DpFS:
     def __init__(self, problem: Problem):      
-        print('Depth First: (:')
         # initialize a new random puzzle
         self.problem : Problem = problem
         self.solution: str = self.problem.solution_state
@@ -58,6 +57,7 @@ class DpFS:
         expand the chosen node, adding the resulting nodes to the frontier
         only if not in the frontier or explored set
         '''
+        print('Depth First: (:')
         # check if this is solvable
         if not self.problem.is_solvable():
             return None
@@ -88,5 +88,5 @@ class DpFS:
             # only if not in the frontier or explored set (coverd in genFrontier)
             self.expandFrontier(chosenLeaf)
             
-            # if self.qFrontier.qsize() % 256 == 0:
-            print('size of frontier: ' + str(len(self.dqFrontier)), end='\r')
+            if len(self.dqFrontier) % 1_000 == 0:
+                print('size of frontier: ' + str(len(self.dqFrontier)), end='\r')
