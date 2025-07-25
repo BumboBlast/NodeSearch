@@ -5,6 +5,7 @@ from ProblemTest import EightPuzzle, Problem
 from Solver import Solver
 from SearchBreadthFirst import BrFS
 from SearchDepthFirst import DpFS
+from SearchDepthLimited import DepthLimited
 from MemoryTracking import track
 
 import sys
@@ -55,10 +56,15 @@ if __name__ == '__main__':
         solver = BrFS(problem)
     elif user_arg == 'depth-first':
         solver: Solver = DpFS(problem)
+    elif user_arg == 'depth-limited':
+        solver: Solver = DepthLimited(problem)
     else:
-        print('Choose search algorithm: \"breath-first\" or \"depth-first\"')
+        print('Choose search algorithm: \"breath-first\", \"depth-first\", \"depth-limited\"')
     
     # solve the problem
     if solver: # better way to do this?
         solution_node : Node = solveThePuzzle(solver, problem)
-        printSolution(solution_node, 60)
+        if type(solution_node) is str:
+            print(solution_node)
+        else:
+            printSolution(solution_node, 60)
