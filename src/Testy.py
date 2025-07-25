@@ -9,8 +9,6 @@ from MemoryTracking import track
 
 import sys
 
-print('(:')
-
 ''' puzzles '''
 def getSomePuzzles() -> list:
     puzzleList : list = list()
@@ -44,10 +42,23 @@ def printSolution(solution_node: Node, max_solution_length: int):
         print('no solution ):')
 
 if __name__ == '__main__':
+    # get problem
     problem: EightPuzzle = getSomePuzzles()[2]
     problem.solution_state = '012345678' # hard coded probably in the wrong place
-    # get solver object
-    # solver: Solver = BrFS(problem)
-    solver: Solver = DpFS(problem)
-    solution_node : Node = solveThePuzzle(solver, problem)
-    printSolution(solution_node, 60)
+    
+    # get solver object and user argument
+    user_arg : str = None
+    solver : Solver = None
+    if len(sys.argv) == 2:
+        user_arg : str = sys.argv[1]
+    if user_arg == 'breadth-first':
+        solver = BrFS(problem)
+    elif user_arg == 'depth-first':
+        solver: Solver = DpFS(problem)
+    else:
+        print('Choose search algorithm: \"breath-first\" or \"depth-first\"')
+    
+    # solve the problem
+    if solver: # better way to do this?
+        solution_node : Node = solveThePuzzle(solver, problem)
+        printSolution(solution_node, 60)

@@ -18,9 +18,10 @@ class BrFS(Solver):
         
         self.qFrontier: Queue = Queue()
         self.explored: dict = dict()
+        self.explored[self.root.state] = self.root # idk if we should add root to explored
         # gen frontier
         self.expandFrontier(self.root)
-        # self.explored[self.root.state] = self.root # idk if we should add root to explored
+        
     
     def expandFrontier(self, node_to_expand: Node):
         ''' Modifies self.qFrontier, push_backs new nodes by expanding argument node for each action.
@@ -90,5 +91,6 @@ class BrFS(Solver):
             # only if not in the frontier or explored set (coverd in genFrontier)
             self.expandFrontier(chosenLeaf)
             
-            if self.qFrontier.qsize() % 1_000 == 0:
+            if self.qFrontier.qsize() % 10_000 == 0:
                 print('size of frontier: ' + str(self.qFrontier.qsize()), end='\r')
+        print('\n')

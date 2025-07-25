@@ -2,8 +2,9 @@
 from ChildNodeTest import Node
 from ProblemTest import Problem
 from collections import deque
+from Solver import Solver
 
-class DpFS:
+class DpFS(Solver):
     def __init__(self, problem: Problem):
         super().__init__()
         # initialize a new random puzzle
@@ -18,8 +19,8 @@ class DpFS:
         self.dqFrontier: deque = deque() # FILO
         self.explored: dict = dict()
         # gen frontier
+        self.explored[self.root.state] = self.root # idk if we should add root to explored
         self.expandFrontier(self.root)
-        # self.explored[self.root.state] = self.root # idk if we should add root to explored
     
     def expandFrontier(self, node_to_expand: Node):
         ''' Modifies self.qFrontier, push_backs new nodes by expanding argument node for each action.
@@ -89,5 +90,6 @@ class DpFS:
             # only if not in the frontier or explored set (coverd in genFrontier)
             self.expandFrontier(chosenLeaf)
             
-            if len(self.dqFrontier) % 1_000 == 0:
+            if len(self.dqFrontier) % 10_000 == 0:
                 print('size of frontier: ' + str(len(self.dqFrontier)), end='\r')
+        print('\n')
