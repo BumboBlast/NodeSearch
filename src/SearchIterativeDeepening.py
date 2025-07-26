@@ -4,6 +4,9 @@ Iterative Deepening Search
 The iterative deepening search algorithm, which repeatedly applies depth-limited search with increasing
 limits. It terminates when a solution is found or if the depth-limited search returns failure, meaning
 that no solution exists.
+
+In general, iterative deepening is the preferred uninformed search method when the search space is large
+and the depth of the solution is not known.
 '''
 
 

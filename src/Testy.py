@@ -1,3 +1,12 @@
+'''
+    todo:
+        [] refactor Testy.py to main.py
+        [] refactor Testy -> printSolution into class specific methods. 
+            Each algorithm should be able to print its own solution
+        [] refactor Bidrectional to be a little better
+        [] fix bug in Bidrectional. puzzle 3 '102345678'
+'''
+
 
 
 from ChildNodeTest import Node
@@ -7,6 +16,7 @@ from SearchBreadthFirst import BrFS
 from SearchDepthFirst import DpFS
 from SearchDepthLimited import DepthLimited
 from SearchIterativeDeepening import IterativeDeepening
+from SearchBidirectional import Bidirection
 from MemoryTracking import track
 
 import sys
@@ -31,11 +41,13 @@ def solveThePuzzle(solver: Solver, problem: Problem) -> Node:
     solution_node : Node = solver.search()
     return solution_node
 
-def printSolution(solution_node: Node, max_solution_length: int):
+def printSolution(solution_node: Node, max_solution_length: int, reverse: bool = False):
     if solution_node:
         solution_chain: list = Node.getNodeChainIterative(solution_node, short=True)
         print('solution chain is ' + str(len(solution_chain)) + ' nodes')
         if len(solution_chain) < max_solution_length:
+            if reverse:
+                solution_chain.reverse()
             for n in solution_chain[::-1]:
                 print(str(n))
         else:
@@ -49,24 +61,32 @@ search_algorithms: dict = {
     'depth-first': DpFS,
     'depth-limited': DepthLimited,
     'iterative-deepening': IterativeDeepening,
+    'bidirectional' : Bidirection
 }
 
 if __name__ == '__main__':
     # get problem
-    problem: EightPuzzle = getSomePuzzles()[2]
+    problem: EightPuzzle = getSomePuzzles()[0]
     problem.solution_state = '012345678' # hard coded probably in the wrong place
     
     # get solver object and user argument
     user_arg : str = None
     solver : Solver = None
-    if len(sys.argv) == 2:
+    try:
         user_arg : str = sys.argv[1]
         solver = search_algorithms[user_arg](problem)
+    except Exception as e:
+        print(e)
+        algo_names: str = ',\n\t'.join([name for name in search_algorithms.keys()])
+        print(f'Run with argument:\n\t{algo_names}')
     
     # solve the problem
     if solver: # better way to do this?
         solution_node : Node = solveThePuzzle(solver, problem)
         if type(solution_node) is str:
             print(solution_node)
+        elif type(solution_node) is list:
+            printSolution(solution_node[0], 60)
+            printSolution(solution_node[1], 60, reverse=True)
         else:
             printSolution(solution_node, 60)

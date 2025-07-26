@@ -65,7 +65,7 @@ class BrFS(Solver):
         if not self.problem.is_solvable():
             return None
 
-        plsHalt = 1_000_000
+        plsHalt = 10_000_000
         while (plsHalt > 0):
             plsHalt -= 1
             # if the frontier is empty then return failure
