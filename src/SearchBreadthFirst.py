@@ -17,8 +17,8 @@ class BrFS(Solver):
         #initialize frontier and explored (both unique)
         
         self.qFrontier: Queue = Queue()
-        self.explored: dict = dict()
-        self.explored[self.root.state] = self.root # idk if we should add root to explored
+        self.explored: set = set()
+        self.explored.add(self.root.state)
         # gen frontier
         self.expandFrontier(self.root)
         
@@ -28,7 +28,7 @@ class BrFS(Solver):
         '''
         for action_a in self.problem.actions:
             new_frontier_node : Node = node_to_expand.child_node(self.problem, action_a)
-            if new_frontier_node.state not in self.explored.keys():
+            if new_frontier_node.state not in self.explored:
                 self.qFrontier.put(new_frontier_node)
 
     def printFrontier(self, short: bool = False):
@@ -85,7 +85,7 @@ class BrFS(Solver):
                 return chosenLeaf
             
             # add the node to the explored set
-            self.explored[chosenLeaf.state] = chosenLeaf
+            self.explored.add(chosenLeaf.state)
 
             # expand the chosen node, adding the resulting nodes to the frontier
             # only if not in the frontier or explored set (coverd in genFrontier)

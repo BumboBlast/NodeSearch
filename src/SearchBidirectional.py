@@ -71,13 +71,13 @@ class Bidirection(Solver):
             if self.midpoint:
                 # print(f'left node:{self.midpoint[0]}')
                 # print(f'right node:{self.midpoint[1]}')
+                print('\n')
                 return self.midpoint
                 
             self.explored[startLeaf.state] = startLeaf
             self.explored[finishLeaf.state] = finishLeaf
             if len(self.explored) % 100 == 0:
                 print(f'sFrontier: {self.qStartFrontier.qsize()}\tfFrontier:{self.qFinishFrontier.qsize()})', end='\r')
-  
 
     def expandFrontier(self, node_to_expand: Node, frontier: Queue, frontierDic: dict):
         ''' Modifies self.qFrontier, push_backs new nodes by expanding argument node for each action.
