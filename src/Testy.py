@@ -6,6 +6,7 @@ from Solver import Solver
 from SearchBreadthFirst import BrFS
 from SearchDepthFirst import DpFS
 from SearchDepthLimited import DepthLimited
+from SearchIterativeDeepening import IterativeDeepening
 from MemoryTracking import track
 
 import sys
@@ -42,6 +43,14 @@ def printSolution(solution_node: Node, max_solution_length: int):
     else:
         print('no solution ):')
 
+
+search_algorithms: dict = {
+    'breadth-first': BrFS,
+    'depth-first': DpFS,
+    'depth-limited': DepthLimited,
+    'iterative-deepening': IterativeDeepening,
+}
+
 if __name__ == '__main__':
     # get problem
     problem: EightPuzzle = getSomePuzzles()[2]
@@ -52,14 +61,7 @@ if __name__ == '__main__':
     solver : Solver = None
     if len(sys.argv) == 2:
         user_arg : str = sys.argv[1]
-    if user_arg == 'breadth-first':
-        solver = BrFS(problem)
-    elif user_arg == 'depth-first':
-        solver: Solver = DpFS(problem)
-    elif user_arg == 'depth-limited':
-        solver: Solver = DepthLimited(problem)
-    else:
-        print('Choose search algorithm: \"breath-first\", \"depth-first\", \"depth-limited\"')
+        solver = search_algorithms[user_arg](problem)
     
     # solve the problem
     if solver: # better way to do this?
