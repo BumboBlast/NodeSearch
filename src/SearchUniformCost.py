@@ -29,6 +29,7 @@ from ChildNodeTest import Node
 from ProblemTest import Problem
 from queue import Queue
 from Solver import Solver
+import heapq
 
 class UniformCost(Solver):
     def __init__(self, problem: Problem):
@@ -39,12 +40,12 @@ class UniformCost(Solver):
         self.root.state = self.problem.initial_state
 
         #initialize frontier and explored (both unique)
-        self.qFrontier: dict = dict() # priority queue, ordered by path cost
-        self.qFrontier[self.root.state] = self.root
+        self.qFrontier: list = list() # priority queue, ordered by path cost
+        self.frontierHash : dict = dict()
+        self.qFrontier.append([self.root.path_cost, self.root.state])
+        self.frontierHash[self.root.state] = self.root
         self.explored: set = set()
         # self.explored.add(self.root.state)
-
-        
     
     def expandFrontier(self, node_to_expand: Node):
         ''' Modifies self.qFrontier, push_backs new nodes by expanding argument node for each action.
@@ -53,12 +54,16 @@ class UniformCost(Solver):
             child : Node = node_to_expand.child_node(self.problem, action)
             if child.state == node_to_expand.state:
                 continue
-            if (child.state not in self.explored) and (child.state not in self.qFrontier):
-                self.qFrontier[child.state] = child
-            elif child.state in self.qFrontier:
-                current_frontier_node: Node = self.qFrontier[child.state]
+            entry = [child.path_cost, child.state]
+            # if (child.state not in self.explored) and (child.state not in self.qFrontier):
+            if (child.state not in self.explored) and (child.state not in self.frontierHash):
+                heapq.heappush(self.qFrontier, entry)
+                self.frontierHash[child.state] = child
+            elif child.state in self.frontierHash:
+                current_frontier_node: Node = self.frontierHash[child.state]
                 if current_frontier_node.path_cost > child.path_cost:
-                    self.qFrontier[child.state] = child
+                    self.qFrontier[self.qFrontier.index(child.state)] = child
+                    self.frontierHash[child.state] = entry
     
     def search(self) -> Node | None:
         ''' See src/SearchBreadthFirst.py
@@ -76,16 +81,10 @@ class UniformCost(Solver):
                 return None
             
             # pop node (pop lowest path cost)
-            min_cost : int = 100_000
-            min_key = str()
+            chosen_leaf_state: str  = heapq.heappop(self.qFrontier)[1]
+            chosen_leaf: Node = self.frontierHash[chosen_leaf_state]
+            self.frontierHash.pop(chosen_leaf.state)
 
-            for k in self.qFrontier:
-                this_node: Node = self.qFrontier[k]
-                if min_cost > this_node.path_cost:
-                    min_cost = this_node.path_cost
-                    min_key = k
-
-            chosen_leaf : Node = self.qFrontier.pop(min_key)
             if chosen_leaf.state == self.problem.solution_state:
                 return chosen_leaf
             self.explored.add(chosen_leaf.state)
