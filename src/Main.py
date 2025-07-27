@@ -1,6 +1,7 @@
 '''
     todo:
-        [] refactor Testy.py to main.py
+        [] refactor SearchUniformCost to use a heapQ isntead of dict for its frontier (implement prioQ)
+        [] refactor SearchBreadthFirst to search dict keys using \\ if str in dic \\ instead of dic.keys()
         [] refactor Testy -> printSolution into class specific methods. 
             Each algorithm should be able to print its own solution
         [] refactor Bidrectional to be a little better
@@ -28,6 +29,7 @@ from SearchDepthFirst import DpFS
 from SearchDepthLimited import DepthLimited
 from SearchIterativeDeepening import IterativeDeepening
 from SearchBidirectional import Bidirection
+from SearchUniformCost import UniformCost
 from MemoryTracking import track
 
 import sys
@@ -69,10 +71,11 @@ def printSolution(solution_node: Node, max_solution_length: int, reverse: bool =
 
 search_algorithms: dict = {
     'breadth-first': BrFS,
+    'uniform-cost' : UniformCost,
     'depth-first': DpFS,
     'depth-limited': DepthLimited,
     'iterative-deepening': IterativeDeepening,
-    'bidirectional' : Bidirection
+    'bidirectional' : Bidirection,
 }
 
 if __name__ == '__main__':
