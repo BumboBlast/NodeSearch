@@ -24,6 +24,7 @@ class IterativeDeepening(Solver):
         # initialize root node
         self.root : Node = Node()
         self.root.state = self.problem.initial_state
+        self.explored : set = set()
 
     '''
     function ITERATIVE-DEEPENING-SEARCH (problem) returns a solution, or failure
@@ -60,8 +61,8 @@ class IterativeDeepening(Solver):
 
     def depthLimitedSearch(self, limit) -> Node | str:
         # re-initialze explored set
-        self.explored: dict = dict()
-        self.explored[self.root.state] = self.root # idk if should add root to explored
+        self.explored = set()
+        self.explored.add(self.root.state) # idk if should add root to explored
         start_node : Node = Node(None, self.problem.initial_state)
         return self.recursive_DLS(start_node, limit)
 
@@ -75,9 +76,9 @@ class IterativeDeepening(Solver):
             for action in self.problem.actions:
                 child_node : Node = node.child_node(self.problem, action)
                 # check if explored or not
-                if child_node.state in self.explored.keys():
+                if child_node.state in self.explored:
                     continue
-                self.explored[child_node.state] = child_node
+                self.explored.add(child_node.state)
                 result : Node | str = self.recursive_DLS(child_node, limit - 1)
                 if result == 'cutoff':
                     cutoff_occurred = True

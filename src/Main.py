@@ -1,6 +1,5 @@
 '''
     todo:
-        [] refactor SearchBreadthFirst to search dict keys using \\ if str in dic \\ instead of dic.keys()
         [] refactor Testy -> printSolution into class specific methods. 
             Each algorithm should be able to print its own solution
         [] refactor Bidrectional to be a little better

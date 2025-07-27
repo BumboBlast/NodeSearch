@@ -17,9 +17,9 @@ class DpFS(Solver):
         #initialize frontier and explored (both unique)
 
         self.dqFrontier: deque = deque() # FILO
-        self.explored: dict = dict()
+        self.explored: set = set()
         # gen frontier
-        self.explored[self.root.state] = self.root # idk if we should add root to explored
+        self.explored.add(self.root.state) # idk if we should add root to explored
         self.expandFrontier(self.root)
     
     def expandFrontier(self, node_to_expand: Node):
@@ -27,24 +27,9 @@ class DpFS(Solver):
         '''
         for action_a in self.problem.actions:
             new_frontier_node : Node = node_to_expand.child_node(self.problem, action_a)
-            if new_frontier_node.state not in self.explored.keys():
+            if new_frontier_node.state not in self.explored:
                 # self.qFrontier.put(new_frontier_node)
                 self.dqFrontier.append(new_frontier_node)
-
-    def printFrontier(self, short: bool = False):
-        # n: Node
-        # for n in self.qFrontier.values():
-        #     if short:
-        #         print('action:\t' + str(n.action.__name__) + '  \t' + str(n.state))
-        #     else:
-        #         print('action: ' + str(n.action.__name__) + '\n' + Problem.print_state(n.state))
-        n: Node
-        for n in self.dqFrontier:
-            if short:
-                print('action:\t' + str(n.action.__name__) + '  \t' + str(n.state))
-            else:
-                print('action: ' + str(n.action.__name__) + '\n' + Problem.print_state(n.state))
-
     
     def search(self) -> Node | None:
         '''
@@ -84,7 +69,7 @@ class DpFS(Solver):
                 return chosenLeaf
             
             # add the node to the explored set
-            self.explored[chosenLeaf.state] = chosenLeaf
+            self.explored.add(chosenLeaf.state)
 
             # expand the chosen node, adding the resulting nodes to the frontier
             # only if not in the frontier or explored set (coverd in genFrontier)

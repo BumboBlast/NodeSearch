@@ -31,21 +31,6 @@ class BrFS(Solver):
             if new_frontier_node.state not in self.explored:
                 self.qFrontier.put(new_frontier_node)
 
-    def printFrontier(self, short: bool = False):
-        # n: Node
-        # for n in self.qFrontier.values():
-        #     if short:
-        #         print('action:\t' + str(n.action.__name__) + '  \t' + str(n.state))
-        #     else:
-        #         print('action: ' + str(n.action.__name__) + '\n' + Problem.print_state(n.state))
-        n: Node
-        for n in self.qFrontier.queue:
-            if short:
-                print('action:\t' + str(n.action.__name__) + '  \t' + str(n.state))
-            else:
-                print('action: ' + str(n.action.__name__) + '\n' + Problem.print_state(n.state))
-
-    
     def search(self) -> Node | None:
         '''
         Function GRAPH-SEARCH (problem) returns a solution, or failure

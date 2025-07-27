@@ -32,9 +32,9 @@ class DepthLimited(Solver):
         self.root.state = self.problem.initial_state
 
         # initialze search limit
-        self.limit = 200 # hardcoded
-        self.explored: dict = dict()
-        self.explored[self.root.state] = self.root # idk if should add root to explored
+        self.limit = 50 # hardcoded
+        self.explored: set = set()
+        self.explored.add(self.root.state) # idk if should add root to explored
 
     '''
     function DEPTH-LIMITED-SEARCH (problem, limit ) returns a solution, or failure/cutoff
@@ -73,9 +73,9 @@ class DepthLimited(Solver):
             for action in self.problem.actions:
                 child_node : Node = node.child_node(self.problem, action)
                 # check if explored or not
-                if child_node.state in self.explored.keys():
+                if child_node.state in self.explored:
                     continue
-                self.explored[child_node.state] = child_node
+                self.explored.add(child_node.state)
                 result : Node | str = self.recursive_DLS(child_node, limit - 1)
                 if result == 'cutoff':
                     cutoff_occurred = True
