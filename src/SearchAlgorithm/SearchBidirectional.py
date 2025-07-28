@@ -12,11 +12,11 @@ We can reduce this by roughly half if one of the two searches is done by iterati
 least one of the frontiers must be kept in memory so that the intersection check can be done.
 '''
 
-from ChildNodeTest import Node
-from ProblemTest import Problem
+from Node import Node
+from Problem import Problem
 from collections import deque
 from queue import Queue
-from Solver import Solver
+from SearchAlgorithm.Solver import Solver
 
 class Bidirection(Solver):
     def __init__(self, problem: Problem):

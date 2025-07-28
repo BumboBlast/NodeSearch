@@ -1,8 +1,8 @@
 
-from ChildNodeTest import Node
-from ProblemTest import Problem
+from Node import Node
+from Problem import Problem
 from collections import deque
-from Solver import Solver
+from SearchAlgorithm.Solver import Solver
 
 class DpFS(Solver):
     def __init__(self, problem: Problem):

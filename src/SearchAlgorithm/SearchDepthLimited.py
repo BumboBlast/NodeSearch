@@ -1,37 +1,42 @@
 '''
-Iterative Deepening Search
+Depth-Limited Search
 
-The iterative deepening search algorithm, which repeatedly applies depth-limited search with increasing
-limits. It terminates when a solution is found or if the depth-limited search returns failure, meaning
-that no solution exists.
+To solve infinite-depth problems, introduce a depth limiter, based off the diameter of the problem.
 
-In general, iterative deepening is the preferred uninformed search method when the search space is large
-and the depth of the solution is not known.
+if the depth-limit is too shallow, (l < d), problem may be incomplete. (This is likely when d is unknown.)
+if the depth-limit is too deep, (l > d), solution may be non-optimal
+
+Notice that depth-limited search can terminate with two kinds of failure: the standard failure
+value indicates no solution; the cutoff value indicates no solution within the depth limit.
+
+
+I'm not sure why this isn't working. It should find any solution of depth < limit,
+but this won't find any solution with limit 35, when BrFS finds solutinon of depth 29.
+puzzle: '876543210'
 '''
 
 
-from ChildNodeTest import Node
-from ProblemTest import Problem
+from Node import Node
+from Problem import Problem
 from collections import deque
-from Solver import Solver
+from SearchAlgorithm.Solver import Solver
 
-class IterativeDeepening(Solver):
+class DepthLimited(Solver):
     def __init__(self, problem: Problem):
         super().__init__()
         # initialize a new random puzzle
         self.problem : Problem = problem
-        
+        # self.solution: str = self.problem.solution_state # actually ,the problem already knows about this.
         # initialize root node
         self.root : Node = Node()
         self.root.state = self.problem.initial_state
-        self.explored : set = set()
+
+        # initialze search limit
+        self.limit = 50 # hardcoded
+        self.explored: set = set()
+        self.explored.add(self.root.state) # idk if should add root to explored
 
     '''
-    function ITERATIVE-DEEPENING-SEARCH (problem) returns a solution, or failure
-        for depth = 0 to ∞ do
-            result ← DEPTH-LIMITED-SEARCH (problem, depth)
-            if result != cutoff then return result
-
     function DEPTH-LIMITED-SEARCH (problem, limit ) returns a solution, or failure/cutoff
         return RECURSIVE-DLS(MAKE-NODE (problem.INITIAL-STATE), problem, limit)
 
@@ -52,22 +57,14 @@ class IterativeDeepening(Solver):
         # check if this is solvable
         if not self.problem.is_solvable():
             return None
-        for depth in range(0, 100):
-            result = self.depthLimitedSearch(depth)
-            # print(result)
-            if result != 'cutoff':
-                print('\n'); print('iterative-deepening-search, done(:')
-                return result
-
-    def depthLimitedSearch(self, limit) -> Node | str:
-        # re-initialze explored set
-        self.explored = set()
-        self.explored.add(self.root.state) # idk if should add root to explored
         start_node : Node = Node(None, self.problem.initial_state)
-        return self.recursive_DLS(start_node, limit)
+        return self.recursive_DLS(start_node, self.limit)
 
+    # @staticmethod
     def recursive_DLS(self, node: Node, limit: int ) -> Node | str:
         if self.problem.solution_state == node.state:
+            print('\n'); print('depth-limited search, done(:')
+            # print('nodes explroed: ', len(self.explored))
             return node
         elif limit == 0:
             return 'cutoff'
@@ -84,8 +81,5 @@ class IterativeDeepening(Solver):
                     cutoff_occurred = True
                 elif result:
                     return result
-            if cutoff_occurred:
-                return 'cutoff'
-            else:
-                return None
+            return 'cutoff' if cutoff_occurred else None
 

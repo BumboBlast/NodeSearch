@@ -9,25 +9,23 @@
         [] create unit testing module for executing these puzzles in batch
         [] generalize EightPuzzle to N-Puzzle
         [] create other problems
-            sudoku, 8 queens, chess, navigation, rubicks cube?
+            sudoku, 8 queens, chess, navigation, rubicks cube, hanoi?
         [] organize all teh search modules into a folder
         [] create more search algorithms
-        [] rename childNodeTest -> childNode or just Node
-        [] rename ProblemTest -> Problem
         [] if create more problems, could move eightPuzzle and rest of problems into separate files
 '''
 
 
 
-from ChildNodeTest import Node
-from ProblemTest import EightPuzzle, Problem
-from Solver import Solver
-from SearchBreadthFirst import BrFS
-from SearchDepthFirst import DpFS
-from SearchDepthLimited import DepthLimited
-from SearchIterativeDeepening import IterativeDeepening
-from SearchBidirectional import Bidirection
-from SearchUniformCost import UniformCost
+from Node import Node
+from Problem import EightPuzzle, Problem
+from SearchAlgorithm.Solver import Solver
+from SearchAlgorithm.SearchBreadthFirst import BrFS
+from SearchAlgorithm.SearchDepthFirst import DpFS
+from SearchAlgorithm.SearchDepthLimited import DepthLimited
+from SearchAlgorithm.SearchIterativeDeepening import IterativeDeepening
+from SearchAlgorithm.SearchBidirectional import Bidirection
+from SearchAlgorithm.SearchUniformCost import UniformCost
 from MemoryTracking import track
 
 import sys

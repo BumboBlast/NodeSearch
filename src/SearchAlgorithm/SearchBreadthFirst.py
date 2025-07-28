@@ -1,8 +1,9 @@
 
-from ChildNodeTest import Node
-from ProblemTest import Problem
+from Node import Node
+from Problem import Problem
 from queue import Queue
-from Solver import Solver
+from SearchAlgorithm.Solver import Solver
+
 
 class BrFS(Solver):
     def __init__(self, problem: Problem):
