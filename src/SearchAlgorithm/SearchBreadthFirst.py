@@ -22,6 +22,9 @@ class BrFS(Solver):
         self.explored.add(self.root.state)
         # gen frontier
         self.expandFrontier(self.root)
+
+    ''' -------------- SEARCH -----------------
+    '''
         
     
     def expandFrontier(self, node_to_expand: Node):

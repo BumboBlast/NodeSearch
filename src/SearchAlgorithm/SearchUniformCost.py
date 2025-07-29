@@ -62,7 +62,7 @@ class UniformCost(Solver):
             elif child.state in self.frontierHash:
                 current_frontier_node: Node = self.frontierHash[child.state]
                 if current_frontier_node.path_cost > child.path_cost:
-                    self.qFrontier[self.qFrontier.index(child.state)] = child
+                    self.qFrontier[self.qFrontier.index(child.state)] = child.state
                     self.frontierHash[child.state] = entry
     
     def search(self) -> Node | None:

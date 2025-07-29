@@ -41,6 +41,17 @@ class Bidirection(Solver):
         # stupid global to break out of BrFS loop
         self.midpoint : list = None
 
+    @staticmethod
+    def get_solution(solution_node_pair: list) -> list:
+        solution_chain: list = list()
+        if solution_node_pair and type(solution_node_pair) is list:
+            first_half: list = Node.getNodeChainIterative(solution_node_pair[0], short=True)
+            second_half: list = Node.getNodeChainIterative(solution_node_pair[1], short=True)
+            second_half.reverse()
+            solution_chain.extend(second_half[:-1])
+            solution_chain.extend(first_half)
+        return solution_chain
+
     ''' So i guess... modify BrFS to expand the frontier from both sides?
         Then at new node, check for intersections between both frontiers
     '''

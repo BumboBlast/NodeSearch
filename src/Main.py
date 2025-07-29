@@ -50,19 +50,18 @@ def solveThePuzzle(solver: Solver, problem: Problem) -> Node:
     solution_node : Node = solver.search()
     return solution_node
 
-def printSolution(solution_node: Node, max_solution_length: int, reverse: bool = False):
-    if solution_node:
-        solution_chain: list = Node.getNodeChainIterative(solution_node, short=True)
-        print('solution chain is ' + str(len(solution_chain)) + ' nodes')
-        if len(solution_chain) < max_solution_length:
-            if reverse:
-                solution_chain.reverse()
-            for n in solution_chain[::-1]:
-                print(str(n))
-        else:
-            print('solution too long to print')
-    else:
-        print('no solution ):')
+def print_solution(solver: Solver, solution_node: Node, max_solution_len: int = 100, reverse: bool = False):
+    solution_chain: list = solver.get_solution(solution_node)
+    if len(solution_chain) <= 0:
+        print('No solution ):')
+        return
+    print(f'solution is {len(solution_chain)} nodes long')
+    if len(solution_chain) > max_solution_len:
+        print('Solution to long to print')
+    if reverse:
+        solution_chain.reverse()
+    for n in solution_chain[::-1]:
+        print(str(n))
 
 
 search_algorithms: dict = {
@@ -95,8 +94,4 @@ if __name__ == '__main__':
         solution_node : Node = solveThePuzzle(solver, problem)
         if type(solution_node) is str:
             print(solution_node)
-        elif type(solution_node) is list:
-            printSolution(solution_node[0], 60)
-            printSolution(solution_node[1], 60, reverse=True)
-        else:
-            printSolution(solution_node, 60)
+        print_solution(solver, solution_node, 60)

@@ -17,20 +17,12 @@ class Problem:
     def is_solvable(self) -> bool:
         pass
     @staticmethod
-    def print_state(state: str) -> str:
-        '''print the state of the puzzle as a rectangle
-        x = i % width;    // % is the "modulo operator", the remainder of i / width;
-        y = i / width;    // where "/" is an integer division
-        '''
-        ret_str : str = str()
-        _iter : int = 0
-        for _ in range(0, EightPuzzle.DIMENSIONS[0]):
-            row : list = list()
-            for _ in range(0, EightPuzzle.DIMENSIONS[1]):
-                row.append(state[_iter])
-                _iter += 1
-            ret_str += str(row) + '\n'
-        return(str(ret_str))
+    def print_state() -> str:
+        pass
+    
+    @staticmethod
+    def get_solution() -> list:
+        pass
 
 class EightPuzzle(Problem):
     BLANK = '0'
@@ -78,6 +70,22 @@ class EightPuzzle(Problem):
             if p[1] < p[0] and '0' not in [p[0], p[1]]:
                 inversions += 1
         return inversions % 2 == 0
+
+    @staticmethod
+    def print_state(state: str) -> str:
+        '''print the state of the puzzle as a rectangle
+        x = i % width;    // % is the "modulo operator", the remainder of i / width;
+        y = i / width;    // where "/" is an integer division
+        '''
+        ret_str : str = str()
+        _iter : int = 0
+        for _ in range(0, EightPuzzle.DIMENSIONS[0]):
+            row : list = list()
+            for _ in range(0, EightPuzzle.DIMENSIONS[1]):
+                row.append(state[_iter])
+                _iter += 1
+            ret_str += str(row) + '\n'
+        return(str(ret_str))
 
     '''Eight Puzzle Actions - Corresponding to moving the "space" tile
     '''    
