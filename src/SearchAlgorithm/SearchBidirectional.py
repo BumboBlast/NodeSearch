@@ -10,12 +10,15 @@ node is generated or selected for expansion and, with a hash table, will take co
 
 We can reduce this by roughly half if one of the two searches is done by iterative deepening, but at
 least one of the frontiers must be kept in memory so that the intersection check can be done.
+
+
+
+Should each frontier have its own "explored" set?
 '''
 
 from Node import Node
 from Problem import Problem
 from collections import deque
-from queue import Queue
 from SearchAlgorithm.Solver import Solver
 
 class Bidirection(Solver):
@@ -29,14 +32,14 @@ class Bidirection(Solver):
         self.root.state = self.problem.initial_state
 
         # initalize both frontiers (FIFO queue) and explored set
-        self.qStartFrontier: Queue = Queue()
-        self.qFinishFrontier: Queue = Queue()
-        self.qStartFrontier.put(self.root)
-        self.qFinishFrontier.put(Node(state=self.problem.solution_state))
+        self.qStartFrontier: deque = deque()
+        self.qFinishFrontier: deque = deque()
         self.startDict : dict = {self.root.state : self.root}
         self.finishDict : dict = {self.problem.solution_state : Node(state=self.problem.solution_state)}
+        self.qStartFrontier.appendleft(self.root.state)
+        self.qFinishFrontier.appendleft(self.problem.solution_state)
         self.explored: dict = dict()
-        self.explored[self.root.state] = self.root # idk if we should add root to explored
+        # self.explored[self.root.state] = self.root # idk if we should add root to explored
 
         # stupid global to break out of BrFS loop
         self.midpoint : list = None
@@ -68,42 +71,42 @@ class Bidirection(Solver):
         plsHalt = 10_000_000
         while (plsHalt > 0):
             plsHalt -= 1
-            if (self.qStartFrontier.qsize() == 0) or (self.qFinishFrontier.qsize() == 0):
+            if (len(self.qStartFrontier) == 0) or (len(self.qFinishFrontier) == 0):
                 return None
-            startLeaf: Node = self.qStartFrontier.get()
-            finishLeaf: Node = self.qFinishFrontier.get()
-            # if self.problem.solution_state == startLeaf.state:
-            #     return startLeaf
-            # if self.problem.solution_state == finishLeaf.state:
-            #     return finishLeaf
+            startLeafState: str = self.qStartFrontier.pop()
+            finishLeafState: str = self.qFinishFrontier.pop()
+            startLeaf: Node = self.startDict[startLeafState]
+            finishLeaf: Node = self.finishDict[finishLeafState]
+
             self.expandFrontier(startLeaf, self.qStartFrontier, self.startDict)
             self.expandFrontier(finishLeaf, self.qFinishFrontier, self.finishDict)
             self.midpoint = self.checkFrontierIntersection()
             if self.midpoint:
-                # print(f'left node:{self.midpoint[0]}')
-                # print(f'right node:{self.midpoint[1]}')
                 print('\n')
                 return self.midpoint
                 
             self.explored[startLeaf.state] = startLeaf
             self.explored[finishLeaf.state] = finishLeaf
             if len(self.explored) % 100 == 0:
-                print(f'sFrontier: {self.qStartFrontier.qsize()}\tfFrontier:{self.qFinishFrontier.qsize()})', end='\r')
+                print(f'sFrontier: {len(self.qStartFrontier)}\tfFrontier:{len(self.qFinishFrontier)})', end='\r')
 
-    def expandFrontier(self, node_to_expand: Node, frontier: Queue, frontierDic: dict):
+    def expandFrontier(self, node_to_expand: Node, frontier: deque, frontierDic: dict):
         ''' Modifies self.qFrontier, push_backs new nodes by expanding argument node for each action.
         '''
         for action_a in self.problem.actions:
-            new_frontier_node : Node = node_to_expand.child_node(self.problem, action_a)
-            if new_frontier_node.state not in self.explored.keys():
-                frontier.put(new_frontier_node)
-                frontierDic[new_frontier_node.state] = new_frontier_node
+            child : Node = node_to_expand.child_node(self.problem, action_a)
+            if child.state == node_to_expand.state:
+                continue
+            if child.state not in self.explored:
+                frontierDic[child.state] = child
+                frontier.appendleft(child.state)
+                
 
 
     def checkFrontierIntersection(self) -> Node:
         ''' return true if frontiers intersect
         '''
-        for f in self.startDict.keys():
-            if f in self.finishDict.keys():
+        for f in self.startDict:
+            if f in self.finishDict:
                 return [self.startDict[f], self.finishDict[f]]
         return None

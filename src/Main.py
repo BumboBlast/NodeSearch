@@ -1,9 +1,5 @@
 '''
     todo:
-        [] refactor Testy -> printSolution into class specific methods. 
-            Each algorithm should be able to print its own solution
-        [] refactor Bidrectional to be a little better
-        [] fix bug in Bidrectional. puzzle 3 '102345678'
         [] refactor MemoryTracking into generic tracking module (basically just rename)
         [] add functions in MemoryTracking module to export statistics
         [] create unit testing module for executing these puzzles in batch
@@ -75,7 +71,7 @@ search_algorithms: dict = {
 
 if __name__ == '__main__':
     # get problem
-    problem: EightPuzzle = getSomePuzzles()[2]
+    problem: EightPuzzle = getSomePuzzles()[3]
     problem.solution_state = '012345678' # hard coded probably in the wrong place
     
     # get solver object and user argument
