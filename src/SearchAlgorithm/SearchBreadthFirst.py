@@ -1,7 +1,7 @@
 
 from Node import Node
 from Problem import Problem
-from queue import Queue
+from collections import deque
 from SearchAlgorithm.Solver import Solver
 
 
@@ -17,7 +17,7 @@ class BrFS(Solver):
 
         #initialize frontier and explored (both unique)
         
-        self.qFrontier: Queue = Queue()
+        self.qFrontier: deque = deque()
         self.explored: set = set()
         self.explored.add(self.root.state)
         # gen frontier
@@ -33,7 +33,7 @@ class BrFS(Solver):
         for action_a in self.problem.actions:
             new_frontier_node : Node = node_to_expand.child_node(self.problem, action_a)
             if new_frontier_node.state not in self.explored:
-                self.qFrontier.put(new_frontier_node)
+                self.qFrontier.appendleft(new_frontier_node)
 
     def search(self) -> Node | None:
         '''
@@ -58,13 +58,13 @@ class BrFS(Solver):
         while (plsHalt > 0):
             plsHalt -= 1
             # if the frontier is empty then return failure
-            if (self.qFrontier.qsize()) == 0:
+            if len(self.qFrontier) == 0:
                 print('\n', end='\n')
                 print('No soltion found ):')
                 return None
             # choose a leaf node and remove it from the frontier
             # since frontier is a queu (FIFO), just pop_back (.get())
-            chosenLeaf: Node = self.qFrontier.get()
+            chosenLeaf: Node = self.qFrontier.pop()
 
             # if the node contains a goal state then return the corresponding solution
             if self.solution == chosenLeaf.state:
@@ -80,6 +80,6 @@ class BrFS(Solver):
             # only if not in the frontier or explored set (coverd in genFrontier)
             self.expandFrontier(chosenLeaf)
             
-            if self.qFrontier.qsize() % 10_000 == 0:
-                print('size of frontier: ' + str(self.qFrontier.qsize()), end='\r')
+            if len(self.qFrontier) % 10_000 == 0:
+                print('size of frontier: ' + str(len(self.qFrontier)), end='\r')
         print('\n')

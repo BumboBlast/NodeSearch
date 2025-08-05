@@ -62,16 +62,16 @@ def print_solution(solver: Solver, solution_node: Node, max_solution_len: int = 
 
 search_algorithms: dict = {
     'breadth-first': BrFS,
-    'uniform-cost' : UniformCost,
     'depth-first': DpFS,
     'depth-limited': DepthLimited,
     'iterative-deepening': IterativeDeepening,
     'bidirectional' : Bidirection,
+    'uniform-cost' : UniformCost,
 }
 
 if __name__ == '__main__':
     # get problem
-    problem: EightPuzzle = getSomePuzzles()[3]
+    problem: EightPuzzle = getSomePuzzles()[2]
     problem.solution_state = '012345678' # hard coded probably in the wrong place
     
     # get solver object and user argument
