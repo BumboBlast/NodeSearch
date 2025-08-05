@@ -67,7 +67,7 @@ class BrFS(Solver):
             chosenLeaf: Node = self.qFrontier.pop()
 
             # if the node contains a goal state then return the corresponding solution
-            if self.solution == chosenLeaf.state:
+            if self.problem.check_solution(chosenLeaf.state):
                 print('\n')
                 print('breast first search, done(:')
                 print('nodes explroed: ', len(self.explored))

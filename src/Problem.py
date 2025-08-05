@@ -14,12 +14,13 @@ class Problem:
     def step_cost(self, state, action) -> int:
         ''' returns the step cost of performing an action from a given state'''
         pass
+    def check_solution(self, state: object) -> bool:
+        pass
     def is_solvable(self) -> bool:
         pass
     @staticmethod
     def print_state() -> str:
         pass
-    
     @staticmethod
     def get_solution() -> list:
         pass
@@ -51,6 +52,11 @@ class EightPuzzle(Problem):
             all actions are same weight / cost
         '''
         return 1
+
+    def check_solution(self, state: object) -> bool:
+        ''' Return true is [state] is solution state
+        '''
+        return state == self.solution_state
 
     @staticmethod
     def result(state : str, action) -> str:
