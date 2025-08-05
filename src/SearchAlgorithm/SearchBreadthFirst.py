@@ -30,7 +30,7 @@ class BrFS(Solver):
     def expandFrontier(self, node_to_expand: Node):
         ''' Modifies self.qFrontier, push_backs new nodes by expanding argument node for each action.
         '''
-        for action_a in self.problem.actions:
+        for action_a in self.problem.get_actions(node_to_expand.state):
             new_frontier_node : Node = node_to_expand.child_node(self.problem, action_a)
             if new_frontier_node.state not in self.explored:
                 self.qFrontier.appendleft(new_frontier_node)

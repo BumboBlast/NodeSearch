@@ -5,7 +5,9 @@ class Problem:
     def __init__(self):
         self.initial_state : object
         self.solution_state : object
-        self.actions : list
+
+    def get_actions(self, state) -> list:
+        ''' returns list of actions (functions) available at this state '''
         pass
     def result(self, state, action) -> object:
         ''' returns a state, given an action'''

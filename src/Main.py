@@ -12,7 +12,7 @@
 '''
 
 
-
+import traceback
 from Node import Node
 from Problem.Problem import Problem
 from Problem.EightPuzzle import EightPuzzle
@@ -83,7 +83,8 @@ if __name__ == '__main__':
         user_arg : str = sys.argv[1]
         solver = search_algorithms[user_arg](problem)
     except Exception as e:
-        print(e)
+        tb = traceback.format_exc()
+        print(tb)
         algo_names: str = ',\n\t'.join([name for name in search_algorithms.keys()])
         print(f'Run with argument:\n\t{algo_names}')
     

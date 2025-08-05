@@ -15,13 +15,18 @@ class EightPuzzle(Problem):
             _seed_index = random.randint(0, len(_perm))
             # convert tuple -> str
             self.initial_state : str  = ''.join(list(_perm[_seed_index]))
-        self.actions = {
+        self.dimensions = [3, 3]
+
+    def get_actions(self, state) -> list:
+        ''' each state, you can move any direction 
+            if you try to move into the wall, just returns arg state
+        '''
+        return [
             self.moveLeft,
             self.moveRight,
             self.moveUp,
             self.moveDown
-        }
-        self.dimensions = [3, 3]
+        ]
 
     @staticmethod
     def step_cost(state, action) -> int:

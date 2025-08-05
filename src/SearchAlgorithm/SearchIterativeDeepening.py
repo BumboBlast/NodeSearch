@@ -73,7 +73,7 @@ class IterativeDeepening(Solver):
             return 'cutoff'
         else:
             cutoff_occurred: bool = False
-            for action in self.problem.actions:
+            for action in self.problem.get_actions(node.state):
                 child_node : Node = node.child_node(self.problem, action)
                 # check if explored or not
                 if child_node.state in self.explored:
