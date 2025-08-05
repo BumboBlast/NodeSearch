@@ -54,6 +54,7 @@ def print_solution(solver: Solver, solution_node: Node, max_solution_len: int = 
     print(f'solution is {len(solution_chain)} nodes long')
     if len(solution_chain) > max_solution_len:
         print('Solution to long to print')
+        return
     if reverse:
         solution_chain.reverse()
     for n in solution_chain[::-1]:
