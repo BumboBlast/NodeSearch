@@ -1,0 +1,25 @@
+
+
+
+class Problem:
+    def __init__(self):
+        self.initial_state : object
+        self.solution_state : object
+        self.actions : list
+        pass
+    def result(self, state, action) -> object:
+        ''' returns a state, given an action'''
+        pass
+    def step_cost(self, state, action) -> int:
+        ''' returns the step cost of performing an action from a given state'''
+        pass
+    def check_solution(self, state: object) -> bool:
+        pass
+    def is_solvable(self) -> bool:
+        pass
+    @staticmethod
+    def print_state() -> str:
+        pass
+    @staticmethod
+    def get_solution() -> list:
+        pass

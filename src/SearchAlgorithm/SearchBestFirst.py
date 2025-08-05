@@ -8,7 +8,7 @@ first.
 
 
 from Node import Node
-from Problem import Problem
+from Problem.Problem import Problem
 from collections import deque
 from queue import Queue
 from Solver import Solver

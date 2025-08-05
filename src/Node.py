@@ -7,7 +7,7 @@ function CHILD-NODE ( problem, parent, action) returns a node
         PATH-COST = parent.PATH-COST + problem.STEP-COST (parent.STATE , action )
 '''
 from __future__ import annotations
-from Problem import Problem
+from Problem.Problem import Problem
 
 class Node:
     def __init__(self, parent : Node | None = None, state: str | None = ''):

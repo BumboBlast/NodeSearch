@@ -1,6 +1,6 @@
 from Solver import Solver
-from ProblemTest import Problem
-from ChildNodeTest import Node
+from Node import Node
+from Problem.Problem import Problem
 from collections import deque
 
 ''' 

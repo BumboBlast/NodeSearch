@@ -26,7 +26,7 @@ function UNIFORM-COST-SEARCH(problem) returns a solution, or failure
 
 
 from Node import Node
-from Problem import Problem
+from Problem.Problem import Problem
 from queue import Queue
 from SearchAlgorithm.Solver import Solver
 import heapq

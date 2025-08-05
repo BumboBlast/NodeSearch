@@ -11,7 +11,7 @@ and the depth of the solution is not known.
 
 
 from Node import Node
-from Problem import Problem
+from Problem.Problem import Problem
 from collections import deque
 from SearchAlgorithm.Solver import Solver
 

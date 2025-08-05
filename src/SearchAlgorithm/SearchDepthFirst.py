@@ -1,6 +1,6 @@
 
 from Node import Node
-from Problem import Problem
+from Problem.Problem import Problem
 from collections import deque
 from SearchAlgorithm.Solver import Solver
 
