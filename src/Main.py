@@ -12,6 +12,6 @@
 '''
 
 
-import SolvePuzzle.SolveEightPuzzle
+import SolveProblem.SolveEightPuzzle
 if __name__ == '__main__':
-    SolvePuzzle.SolveEightPuzzle.solve_EightPuzzle()
+    SolveProblem.SolveEightPuzzle.solve_EightPuzzle()
