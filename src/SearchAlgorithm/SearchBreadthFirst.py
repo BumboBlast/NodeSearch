@@ -14,9 +14,8 @@ class BrFS(Solver):
         # initialize root node
         self.root : Node = Node()
         self.root.state = self.problem.initial_state
-
-        #initialize frontier and explored (both unique)
         
+        #initialize frontier and explored (both unique)
         self.qFrontier: deque = deque()
         self.explored: set = set()
         self.explored.add(self.root.state)
@@ -26,7 +25,6 @@ class BrFS(Solver):
     ''' -------------- SEARCH -----------------
     '''
         
-    
     def expandFrontier(self, node_to_expand: Node):
         ''' Modifies self.qFrontier, push_backs new nodes by expanding argument node for each action.
         '''

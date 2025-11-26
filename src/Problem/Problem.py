@@ -20,7 +20,7 @@ class Problem:
     def is_solvable(self) -> bool:
         pass
     @staticmethod
-    def print_state() -> str:
+    def print_state(state: str) -> str:
         pass
     @staticmethod
     def get_solution() -> list:
