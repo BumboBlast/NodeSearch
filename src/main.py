@@ -21,6 +21,19 @@ import SolveProblem.SolveEightPuzzle
 import SolveProblem.SolveHanoi
 import SolveProblem.SolveRubiks
 
+
+
+def dbg():
+    print("START dbg")
+    
+    from Problem.Rubiks import Rubiks
+    
+    newRubicks : Rubiks = Rubiks()
+    
+    
+    print("END dbg")
+
+
 problemList = {
     # eight puzzle
     "Eight" : SolveProblem.SolveEightPuzzle.solve_EightPuzzle,
@@ -61,8 +74,11 @@ problemList = {
     "rubiks-cube" : SolveProblem.SolveRubiks.solve_Rubiks,
     "Rubiks-cube" : SolveProblem.SolveRubiks.solve_Rubiks,
     "rubiks-Cube" : SolveProblem.SolveRubiks.solve_Rubiks,
+    
+    "dbg" : dbg
 
 }
+
 
 
 if __name__ == '__main__':
