@@ -30,6 +30,15 @@ class Node:
         }
         return str(str_dict)
 
+    def get_state(self) -> object:
+        ''' returns the state, but in a getter so can return a hashable or something maybe'''
+        # print('called get state')
+        return self.state
+
+    def set_state(self, new_state: object) -> None:
+        ''' assigns state, but in a setter so can insert whatever i want in the call '''
+        self.state = new_state
+
     #@staticmethod
     def child_node(self, problem: Problem, action: function) -> Node:
         '''Return a child node from this node, given an aciton

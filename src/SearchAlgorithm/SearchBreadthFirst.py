@@ -13,12 +13,12 @@ class BrFS(Solver):
         self.solution: str = self.problem.solution_state
         # initialize root node
         self.root : Node = Node()
-        self.root.state = self.problem.initial_state
+        self.root.set_state(self.problem.initial_state)
         
         #initialize frontier and explored (both unique)
         self.qFrontier: deque = deque()
         self.explored: set = set()
-        self.explored.add(self.root.state)
+        self.explored.add(self.root.get_state())
         # gen frontier
         self.expandFrontier(self.root)
 
@@ -28,9 +28,9 @@ class BrFS(Solver):
     def expandFrontier(self, node_to_expand: Node):
         ''' Modifies self.qFrontier, push_backs new nodes by expanding argument node for each action.
         '''
-        for action_a in self.problem.get_actions(node_to_expand.state):
+        for action_a in self.problem.get_actions(node_to_expand.get_state()):
             new_frontier_node : Node = node_to_expand.child_node(self.problem, action_a)
-            if new_frontier_node.state not in self.explored:
+            if new_frontier_node.get_state() not in self.explored:
                 self.qFrontier.appendleft(new_frontier_node)
 
     def search(self) -> Node | None:
@@ -65,14 +65,14 @@ class BrFS(Solver):
             chosenLeaf: Node = self.qFrontier.pop()
 
             # if the node contains a goal state then return the corresponding solution
-            if self.problem.check_solution(chosenLeaf.state):
+            if self.problem.check_solution(chosenLeaf.get_state()):
                 print('\n')
                 print('breast first search, done(:')
                 print('nodes explroed: ', len(self.explored))
                 return chosenLeaf
             
             # add the node to the explored set
-            self.explored.add(chosenLeaf.state)
+            self.explored.add(chosenLeaf.get_state())
 
             # expand the chosen node, adding the resulting nodes to the frontier
             # only if not in the frontier or explored set (coverd in genFrontier)
