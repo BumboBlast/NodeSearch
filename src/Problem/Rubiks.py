@@ -4,30 +4,30 @@
     
     Solved:
     [
-        [0,0,0,0,0,0],
-        [1,1,1,1,1,1],
-        [2,2,2,2,2,2],
-        [3,3,3,3,3,3],
-        [4,4,4,4,4,4],
-        [5,5,5,5,5,5],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0], # TOP
+        [1, 1, 1, 1, 1, 1, 1, 1, 1], # FRONT
+        [2, 2, 2, 2, 2, 2, 2, 2, 2], # LEFT
+        [3, 3, 3, 3, 3, 3, 3, 3, 3], # BACK
+        [4, 4, 4, 4, 4, 4, 4, 4, 4], # RIGHT
+        [5, 5, 5, 5, 5, 5, 5, 5, 5], # BOTTOM
     ]
 
     Mixed up:
     [
         [1, 2, 3, 4, 0, 0, 4, 4, 0], # TOP
-        [0, 5, 3, 0, 2, 3, 2, 5, 1], # FRONT
-        [2, 3, 5, 2, 4, 2, 3, 3, 0], # LEFT
-        [2, 4, 4, 0, 1, 0, 3, 3, 4], # BACK
-        [5, 1, 1, 1, 3, 4, 2, 1, 0], # RIGHT
-        [0, 5, 4, 1, 5, 2, 1, 5, 5], # BOTTOM
+        [0, 2, 3, 0, 5, 3, 5, 2, 1], # FRONT
+        [5, 3, 2, 5, 4, 5, 3, 3, 0], # LEFT
+        [5, 4, 4, 0, 1, 0, 3, 3, 4], # BACK
+        [2, 1, 1, 1, 3, 4, 5, 1, 0], # RIGHT
+        [0, 2, 4, 1, 2, 2, 1, 2, 2], # BOTTOM
     ]
 
     white : 0
     red : 1
-    orange : 2
+    orange : 5
     blue : 3
     green : 4
-    yellow : 5
+    yellow : 2
 
     How can I ensure
         1. relationship between faces and indices in array
@@ -39,14 +39,26 @@
     I could just assume these and if i end up picking up an actual rubiks cube, just try to follow that convention.
 '''
 
+from enum import Enum
 from Problem.Problem import Problem
 # import random
 
 
 class Rubiks(Problem):
+    class Color(Enum):
+        WHITE = 0
+        RED = 1
+        ORANGE = 2
+        YELLOW = 3
+        GREEN = 4
+        BLUE = 5
+        
+        
+       
     def __init__(self, init_state:list = list()):
         # if no init-state passed, make one at random
         super().__init__()
+        self.init_state = init_state
 
     def get_actions(self, state) -> list:
         ''' returns list of actions (functions) available at this state '''
