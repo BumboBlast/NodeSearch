@@ -14,36 +14,36 @@ from MemoryTracking import track
 
 import sys
 
-''' puzzles '''
-def getSomePuzzles() -> list:
-    puzzleList : list = list()
-    puzzleList.append(Hanoi()) # random puzzle
-    puzzleList.append(Hanoi([[4, 3, 2, 1],[],[]])) # custom init-state
-    puzzleList.append(Hanoi([[], [5,4,3,2,1], []]))
-    return puzzleList
+# ''' puzzles '''
+# def getSomePuzzles() -> list:
+    # puzzleList : list = list()
+    # puzzleList.append(Hanoi()) # random puzzle
+    # puzzleList.append(Hanoi([[4, 3, 2, 1],[],[]])) # custom init-state
+    # puzzleList.append(Hanoi([[], [5,4,3,2,1], []]))
+    # return puzzleList
 
-@track
-def solveThePuzzle(solver: Solver, problem: Problem) -> Node:
-    ''' Returns the solution Node.
-    '''    
-    print('init:\n' + Hanoi.print_state(problem.initial_state))
-    print('solvable: ' + str(problem.is_solvable()))
-    solution_node : Node = solver.search()
-    return solution_node
+# @track
+# def solveThePuzzle(solver: Solver, problem: Problem) -> Node:
+    # ''' Returns the solution Node.
+    # '''    
+    # print('init:\n' + Hanoi.print_state(problem.initial_state))
+    # print('solvable: ' + str(problem.is_solvable()))
+    # solution_node : Node = solver.search()
+    # return solution_node
 
-def print_solution(solver: Solver, solution_node: Node, max_solution_len: int = 100, reverse: bool = False):
-    solution_chain: list = solver.get_solution(solution_node)
-    if len(solution_chain) <= 0:
-        print('No solution ):')
-        return
-    print(f'solution is {len(solution_chain)} nodes long')
-    if len(solution_chain) > max_solution_len:
-        print('Solution to long to print')
-        return
-    if reverse:
-        solution_chain.reverse()
-    for n in solution_chain[::-1]:
-        print(str(n))
+# def print_solution(solver: Solver, solution_node: Node, max_solution_len: int = 100, reverse: bool = False):
+    # solution_chain: list = solver.get_solution(solution_node)
+    # if len(solution_chain) <= 0:
+        # print('No solution ):')
+        # return
+    # print(f'solution is {len(solution_chain)} nodes long')
+    # if len(solution_chain) > max_solution_len:
+        # print('Solution to long to print')
+        # return
+    # if reverse:
+        # solution_chain.reverse()
+    # for n in solution_chain[::-1]:
+        # print(str(n))
 
 
 search_algorithms: dict = {
