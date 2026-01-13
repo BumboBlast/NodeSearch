@@ -68,7 +68,7 @@ def solve_EightPuzzle():
     user_arg : str = None
     solver : Solver = None
     try:
-        user_arg : str = sys.argv[1]
+        user_arg : str = sys.argv[2]
         solver = search_algorithms[user_arg](problem)
     except Exception as e:
         tb = traceback.format_exc()

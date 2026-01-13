@@ -2,7 +2,7 @@
 import traceback
 from Node import Node
 from Problem.Problem import Problem
-from Problem.Hanoi import Hanoi
+from Problem.Rubiks import Rubiks
 from SearchAlgorithm.Solver import Solver
 from SearchAlgorithm.SearchBreadthFirst import BrFS
 from SearchAlgorithm.SearchDepthFirst import DpFS
@@ -56,29 +56,30 @@ search_algorithms: dict = {
 }
 
 
-def solve_Hanoi():
+def solve_Rubiks():
+    pass
     # get problem
-    problem: Hanoi = getSomePuzzles()[1]
-    problem.solution_state = [[],[],[4, 3, 2, 1]] # hard coded probably in the wrong place
-    print(problem.initial_state)
-    print(problem.solution_state)
-    print(problem.move_disk_0_1(problem.initial_state))
-    # get solver object and user argument
-    user_arg : str = None
-    solver : Solver = None
-    try:
-        user_arg = sys.argv[2]
-        solver = search_algorithms[user_arg](problem)
-        print('here')
-    except Exception as e:
-        tb = traceback.format_exc()
-        print(tb)
-        algo_names: str = ',\n\t'.join([name for name in search_algorithms.keys()])
-        print(f'Run with argument:\n\t{algo_names}')
+    # problem: Hanoi = getSomePuzzles()[1]
+    # problem.solution_state = [[],[],[4, 3, 2, 1]] # hard coded probably in the wrong place
+    # print(problem.initial_state)
+    # print(problem.solution_state)
+    # print(problem.move_disk_0_1(problem.initial_state))
+    # # get solver object and user argument
+    # user_arg : str = None
+    # solver : Solver = None
+    # try:
+    #     user_arg = sys.argv[1]
+    #     solver = search_algorithms[user_arg](problem)
+    #     print('here')
+    # except Exception as e:
+    #     tb = traceback.format_exc()
+    #     print(tb)
+    #     algo_names: str = ',\n\t'.join([name for name in search_algorithms.keys()])
+    #     print(f'Run with argument:\n\t{algo_names}')
     
-    # solve the problem
-    if solver: # better way to do this?
-        solution_node : Node = solveThePuzzle(solver, problem)
-        if type(solution_node) is str:
-            print(solution_node)
-        print_solution(solver, solution_node, 100)
+    # # solve the problem
+    # if solver: # better way to do this?
+    #     solution_node : Node = solveThePuzzle(solver, problem)
+    #     if type(solution_node) is str:
+    #         print(solution_node)
+    #     print_solution(solver, solution_node, 100)
