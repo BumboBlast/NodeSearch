@@ -6,6 +6,10 @@ class Problem:
         self.initial_state : object
         self.solution_state : object
 
+    def get_state(self, state) -> object:
+        ''' returns state (getter)'''
+        return state
+
     def get_actions(self, state) -> list:
         ''' returns list of actions (functions) available at this state '''
         pass

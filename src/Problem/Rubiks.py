@@ -43,7 +43,6 @@ from enum import Enum
 from Problem.Problem import Problem
 # import random
 
-
 class Rubiks(Problem):
     class Color(Enum):
         WHITE = 0
@@ -52,13 +51,16 @@ class Rubiks(Problem):
         YELLOW = 3
         GREEN = 4
         BLUE = 5
-        
-        
-       
+               
     def __init__(self, init_state:list = list()):
         # if no init-state passed, make one at random
         super().__init__()
         self.init_state = init_state
+
+    def get_state(self, state) -> object:
+        ''' returns state (getter) '''
+        print("get state (:")
+        return state
 
     def get_actions(self, state) -> list:
         ''' returns list of actions (functions) available at this state '''

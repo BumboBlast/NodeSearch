@@ -27,14 +27,43 @@ def dbg():
     print("START dbg")
     
     from Problem.Rubiks import Rubiks
+    from SearchAlgorithm.SearchBreadthFirst import BrFS
+
+    # puzzle 0 -> solved
+    r0 = {
+        "TOP" :     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "FRONT" :   [1, 1, 1, 1, 1, 1, 1, 1, 1],
+        "LEFT" :    [2, 2, 2, 2, 2, 2, 2, 2, 2],
+        "BACK" :    [3, 3, 3, 3, 3, 3, 3, 3, 3],
+        "RIGHT" :   [4, 4, 4, 4, 4, 4, 4, 4, 4],
+        "BOTTOM" :  [5, 5, 5, 5, 5, 5, 5, 5, 5],
+    }
+
+    # puzzle 1 -> scrambled
+    r1 = {
+        "TOP" : [],
+        "FRONT" : [],
+        "LEFT" : [],
+        "BACK" : [],
+        "RIGHT" : [],
+        "BOTTOM" : []
+    }
+
+    newRubiks : Rubiks = Rubiks()
+    newRubiks.initial_state = r0.copy()
+    newRubiks.solution_state = r0.copy() # hard coded probably in the wrong place
+    solver : BrFS = BrFS(newRubiks)
     
-    newRubicks : Rubiks = Rubiks()
-    
+    # print(solver.root.get_state())
+
     
     print("END dbg")
 
 
 problemList = {
+    # debug
+    "dbg" : dbg,
+
     # eight puzzle
     "Eight" : SolveProblem.SolveEightPuzzle.solve_EightPuzzle,
     "eight" : SolveProblem.SolveEightPuzzle.solve_EightPuzzle,
@@ -74,12 +103,7 @@ problemList = {
     "rubiks-cube" : SolveProblem.SolveRubiks.solve_Rubiks,
     "Rubiks-cube" : SolveProblem.SolveRubiks.solve_Rubiks,
     "rubiks-Cube" : SolveProblem.SolveRubiks.solve_Rubiks,
-    
-    "dbg" : dbg
-
 }
-
-
 
 if __name__ == '__main__':
         # get solver object and user argument
