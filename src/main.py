@@ -26,7 +26,7 @@ import SolveProblem.SolveRubiks
 def dbg():
     print("START dbg")
     
-    from Problem.Rubiks import Rubiks
+    from Problem.Rubiks2 import Rubiks
     from SearchAlgorithm.SearchBreadthFirst import BrFS
     from Node import Node
     from SearchAlgorithm.Solver import Solver
@@ -60,16 +60,18 @@ def dbg():
     #     return solution_node
 
     newRubiks : Rubiks = Rubiks()
-    newRubiks.initial_state = r0.copy()
+    # newRubiks.initial_state = r0.copy()
     newRubiks.solution_state = r0.copy() # hard coded probably in the wrong place
     solver : BrFS = BrFS(newRubiks)
 
     print(f"init:\n{newRubiks.initial_state}")
-
-    rot1 : object = newRubiks.rotateLeftCCW(newRubiks.initial_state)
-    rot2 : object = newRubiks.rotateLeftCW(rot1)
-    print(f"next:\n{rot1}")
-    print(f"next:\n{rot2}")
+    
+    print(newRubiks.rotateCube(state=newRubiks.initial_state, z_axis=True, cw=False))
+    
+    # rot1 : object = newRubiks.rotateLeftCCW(newRubiks.initial_state)
+    # rot2 : object = newRubiks.rotateLeftCW(rot1)
+    # print(f"next:\n{rot1}")
+    # print(f"next:\n{rot2}")
 
 
     # solution_node : Node = solveThePuzzle(solver, problem)
