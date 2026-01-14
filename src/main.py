@@ -28,15 +28,17 @@ def dbg():
     
     from Problem.Rubiks import Rubiks
     from SearchAlgorithm.SearchBreadthFirst import BrFS
+    from Node import Node
+    from SearchAlgorithm.Solver import Solver
 
     # puzzle 0 -> solved
     r0 = {
-        "TOP" :     [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        "FRONT" :   [1, 1, 1, 1, 1, 1, 1, 1, 1],
-        "LEFT" :    [2, 2, 2, 2, 2, 2, 2, 2, 2],
-        "BACK" :    [3, 3, 3, 3, 3, 3, 3, 3, 3],
-        "RIGHT" :   [4, 4, 4, 4, 4, 4, 4, 4, 4],
-        "BOTTOM" :  [5, 5, 5, 5, 5, 5, 5, 5, 5],
+        Rubiks.Face.TOP     : [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Rubiks.Face.FRONT   : [1, 1, 1, 1, 1, 1, 1, 1, 1],
+        Rubiks.Face.LEFT    : [2, 2, 2, 2, 2, 2, 2, 2, 2],
+        Rubiks.Face.BACK    : [3, 3, 3, 3, 3, 3, 3, 3, 3],
+        Rubiks.Face.RIGHT   : [4, 4, 4, 4, 4, 4, 4, 4, 4],
+        Rubiks.Face.BOTTOM  : [5, 5, 5, 5, 5, 5, 5, 5, 5],
     }
 
     # puzzle 1 -> scrambled
@@ -49,12 +51,28 @@ def dbg():
         "BOTTOM" : []
     }
 
+    # def solveThePuzzle(solver: Solver, problem: Problem) -> Node:
+    #     ''' Returns the solution Node.
+    #     '''    
+    #     print('init:\n' + Rubiks.print_state(problem.initial_state))
+    #     print('solvable: ' + str(problem.is_solvable()))
+    #     solution_node : Node = solver.search()
+    #     return solution_node
+
     newRubiks : Rubiks = Rubiks()
     newRubiks.initial_state = r0.copy()
     newRubiks.solution_state = r0.copy() # hard coded probably in the wrong place
     solver : BrFS = BrFS(newRubiks)
-    
-    # print(solver.root.get_state())
+
+    print(f"init:\n{newRubiks.initial_state}")
+
+    rot1 : object = newRubiks.rotateLeftCCW(newRubiks.initial_state)
+    rot2 : object = newRubiks.rotateLeftCW(rot1)
+    print(f"next:\n{rot1}")
+    print(f"next:\n{rot2}")
+
+
+    # solution_node : Node = solveThePuzzle(solver, problem)
 
     
     print("END dbg")

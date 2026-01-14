@@ -15,10 +15,10 @@ class BrFS(Solver):
         self.root : Node = Node()
         self.root.set_state(self.problem.initial_state)
         
-        #initialize frontier and explored (both unique)
+        # initialize frontier and explored (both unique)
         self.qFrontier: deque = deque()
         self.explored: set = set()
-        # self.explored.add(self.root.get_state())
+        # problem "gets the state" so it can optionally return a hashable.
         self.explored.add(problem.get_state(self.root.state))
         # gen frontier
         self.expandFrontier(self.root)
