@@ -255,32 +255,87 @@ class Rubiks(Problem):
                         state[51], state[54], state[57], # = rotated CCW
                         state[50], state[53], state[56],                    
                     ]
-                # if z_axis, counter clockwise, rotate CW twice
+                # if z_axis, counter clockwise, rotate CW three times
                 else:
                     rot1 : list = Rubiks.rotateCube(state, z_axis=True, cw=True)
-                    return Rubiks.rotateCube(rot1, z_axis=True, cw=True)
+                    rot2 : list = Rubiks.rotateCube(state=rot1, z_axis=True, cw=True)
+                    return Rubiks.rotateCube(rot2, z_axis=True, cw=True)
                     
             # if NOT z_axis:
             else:
                 if cw:
                     return [
+                        state[20], state[21], state[22], # new TOP face
+                        state[23], state[24], state[25], # = old LEFT face
+                        state[26], state[27], state[28],
+                        0, # kept empty
+                        state[16], state[13], state[10], # new FRONT face
+                        state[17], state[14], state[11], # = rotated CW
+                        state[18], state[15], state[12],
+                        0, # kept empty
+                        state[58], state[57], state[56], # new LEFT face
+                        state[55], state[54], state[53], # = old BOTTOM face rotated CW
+                        state[52], state[51], state[50],
+                        0, # kept empty
+                        state[32], state[35], state[38], # new BACK face
+                        state[31], state[34], state[37], # = rotated CCW
+                        state[30], state[33], state[36],
+                        0, # kept empty
+                        state[0], state[1], state[2], # new RIGHT face
+                        state[3], state[4], state[5], # = old TOP face
+                        state[6], state[7], state[8],
+                        0, # kept empty
+                        state[48], state[47], state[46], # new BOTTOM face
+                        state[45], state[44], state[43], # = old RIGHT face rotated twice?
+                        state[42], state[41], state[40],                    
                     ]
+                # if not z axis, counter clockwise, rotate cw three times.
+                else:
+                    rot1 : list = Rubiks.rotateCube(state, z_axis=False, cw=True)
+                    rot2 : list = Rubiks.rotateCube(state=rot1, z_axis=False, cw=True)
+                    return Rubiks.rotateCube(rot2, z_axis=False, cw=True)
             
         else:
             return None
         
         
     
-    @staticmethod
-    def rotateTopCW(this_state : dict) -> object:
-        pass
-    @staticmethod 
+    @staticmethod # fix me
+    def rotateTopCW(state : object) -> object:
+        ''' rotating top face clockwise '''
+        return [
+            state[6], state[3], state[0], # new TOP face
+            state[7], state[4], state[1], # = old TOP face rot CW
+            state[8], state[5], state[2],
+            0, # kept empty
+            state[40], state[43], state[46], # new FRONT face
+            state[13], state[14], state[15], # = old FRONT face but
+            state[16], state[17], state[18], # 1st row is from RIGHT
+            0, # kept empty
+            state[20], state[21], state[10], # new LEFT face
+            state[23], state[24], state[11], # = old LEFT face but
+            state[26], state[27], state[12], # 3rd col is from FRONT
+            0, # kept empty
+            state[30], state[31], state[32], # new BACK face
+            state[33], state[34], state[35], # = old BACK face but
+            state[28], state[25], state[22], # 3rd row is from from LEFT
+            0, # kept empty
+            state[36], state[41], state[42], # new RIGHT face
+            state[37], state[44], state[45], # = old RIGHT face but
+            state[38], state[47], state[48], # 1st col is from BACK
+            0, # kept empty
+            state[50], state[51], state[52], # new BOTTOM face
+            state[53], state[54], state[55], # = doesnt change
+            state[56], state[57], state[58], 
+        ]
+        
+    @staticmethod # fix me
     def rotateTopCCW(this_state : dict) -> object:
         pass
-    @staticmethod
+    @staticmethod # fix me
     def rotateFrontCW(this_state : dict) -> object:
         pass
-    @staticmethod
+    @staticmethod # fix me
     def rotateFrontCCW(this_state : dict) -> object:
         pass
     @staticmethod # fix me
@@ -298,15 +353,12 @@ class Rubiks(Problem):
     @staticmethod # fix me
     def rotateRightCW(this_state : dict) -> object:
         pass
-
     @staticmethod # fix me
     def rotateRightCCW(this_state : dict) -> object:
         pass
-
     @staticmethod # fix me
     def rotateBottomCW(this_state : dict) -> object:
         pass
-
     @staticmethod # fix me
     def rotateBottomCCW(this_state : dict) -> object:
         pass
