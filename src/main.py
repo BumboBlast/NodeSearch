@@ -32,24 +32,24 @@ def dbg():
     from SearchAlgorithm.Solver import Solver
 
     # puzzle 0 -> solved
-    r0 = {
-        Rubiks.Face.TOP     : [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Rubiks.Face.FRONT   : [1, 1, 1, 1, 1, 1, 1, 1, 1],
-        Rubiks.Face.LEFT    : [2, 2, 2, 2, 2, 2, 2, 2, 2],
-        Rubiks.Face.BACK    : [3, 3, 3, 3, 3, 3, 3, 3, 3],
-        Rubiks.Face.RIGHT   : [4, 4, 4, 4, 4, 4, 4, 4, 4],
-        Rubiks.Face.BOTTOM  : [5, 5, 5, 5, 5, 5, 5, 5, 5],
-    }
+    # r0 = {
+        # Rubiks.Face.TOP     : [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        # Rubiks.Face.FRONT   : [1, 1, 1, 1, 1, 1, 1, 1, 1],
+        # Rubiks.Face.LEFT    : [2, 2, 2, 2, 2, 2, 2, 2, 2],
+        # Rubiks.Face.BACK    : [3, 3, 3, 3, 3, 3, 3, 3, 3],
+        # Rubiks.Face.RIGHT   : [4, 4, 4, 4, 4, 4, 4, 4, 4],
+        # Rubiks.Face.BOTTOM  : [5, 5, 5, 5, 5, 5, 5, 5, 5],
+    # }
 
-    # puzzle 1 -> scrambled
-    r1 = {
-        "TOP" : [],
-        "FRONT" : [],
-        "LEFT" : [],
-        "BACK" : [],
-        "RIGHT" : [],
-        "BOTTOM" : []
-    }
+    # # puzzle 1 -> scrambled
+    # r1 = {
+        # "TOP" : [],
+        # "FRONT" : [],
+        # "LEFT" : [],
+        # "BACK" : [],
+        # "RIGHT" : [],
+        # "BOTTOM" : []
+    # }
 
     # def solveThePuzzle(solver: Solver, problem: Problem) -> Node:
     #     ''' Returns the solution Node.
@@ -61,16 +61,14 @@ def dbg():
 
     newRubiks : Rubiks = Rubiks()
     # newRubiks.initial_state = r0.copy()
-    newRubiks.solution_state = r0.copy() # hard coded probably in the wrong place
+    newRubiks.solution_state = newRubiks.initial_state # hard coded probably in the wrong place
     solver : BrFS = BrFS(newRubiks)
 
     print(f"init:\n{newRubiks.initial_state}")
     
-    print(newRubiks.rotateCube(state=newRubiks.initial_state, z_axis=True, cw=False))
-    
-    # rot1 : object = newRubiks.rotateLeftCCW(newRubiks.initial_state)
-    # rot2 : object = newRubiks.rotateLeftCW(rot1)
-    # print(f"next:\n{rot1}")
+    rot1 : object = Rubiks.rotateTopCW(state=newRubiks.initial_state)
+    # rot2 : object = 
+    print(f"next:\n{rot1}")
     # print(f"next:\n{rot2}")
 
 
