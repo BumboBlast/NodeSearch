@@ -65,9 +65,9 @@ def dbg():
     solver : BrFS = BrFS(newRubiks)
 
     print(f"init:\n{Rubiks.print_net(newRubiks.initial_state)}")
-    func1 : function = Rubiks.rotateTopCW
+    func1 : function = Rubiks.rotateBackCW
     
-    rot1 : object = Rubiks.rotateLeftCW(state=newRubiks.initial_state)
+    rot1 : object = func1(state=newRubiks.initial_state)
     # rot2 : object = 
 
     print(f"{func1.__name__}:\n{Rubiks.print_net(rot1)}")

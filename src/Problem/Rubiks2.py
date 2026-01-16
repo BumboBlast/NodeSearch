@@ -349,13 +349,28 @@ class Rubiks(Problem):
     @staticmethod # fix me
     def rotateTopCCW(this_state : dict) -> object:
         pass
-    @staticmethod # fix me
-    def rotateFrontCW(this_state : dict) -> object:
-        pass
+
+    @staticmethod # GOOD
+    def rotateFrontCW(state : object) -> object:
+        ''' this rotatation is the same as rotating the whole cube:
+            Y_axis clockwise once + Z_axis clockwise once
+            then doing TOP-Clockwise
+            then rotate back:
+            Y_axis counter-clockwise once + Z_axis counter-clockwise once
+        '''
+        rot: object = Rubiks.rotateCube(state, z_axis=False, cw=True)
+        rot = Rubiks.rotateCube(rot, z_axis=True, cw=True)
+        rot = Rubiks.rotateTopCW(rot)
+        # rotate back
+        rot =  Rubiks.rotateCube(rot, z_axis=False, cw=False)
+        rot =  Rubiks.rotateCube(rot, z_axis=True, cw=False)
+        return rot
+
     @staticmethod # fix me
     def rotateFrontCCW(this_state : dict) -> object:
         pass
-    @staticmethod
+
+    @staticmethod # GOOD
     def rotateLeftCW(state : object) -> object:
         ''' this rotatation is the same as rotating the whole cube:
             Y_axis clockwise once
@@ -363,29 +378,71 @@ class Rubiks(Problem):
             then rotate back:
             Y_axis CounterClockwise once
         '''
-        rot1: object = Rubiks.rotateCube(state, z_axis=False, cw=True)
-        rot2: object = Rubiks.rotateTopCW(rot1)
-        return Rubiks.rotateCube(rot2, z_axis=False, cw=False)
+        rot: object = Rubiks.rotateCube(state, z_axis=False, cw=True)
+        rot = Rubiks.rotateTopCW(rot)
+        # rotate back
+        rot =  Rubiks.rotateCube(rot, z_axis=False, cw=False)
+        return rot
 
 
     @staticmethod # fix me
     def rotateLeftCCW(this_state : dict) -> object:
         pass
-    @staticmethod # fix me
-    def rotateBackCW(this_state : dict) -> object:
-        pass
+        
+    @staticmethod # GOOD
+    def rotateBackCW(state : object) -> object:
+        ''' this rotatation is the same as rotating the whole cube:
+            Y_axis clockwise  + Z_axis counter-clockwise once
+            then doing TOP-Clockwise
+            then rotate back:
+            Y_axis counter-clockwise + Z_axis clockwise once
+        '''
+        rot: object = Rubiks.rotateCube(state, z_axis=False, cw=True)
+        rot = Rubiks.rotateCube(rot, z_axis=True, cw=False)
+        rot = Rubiks.rotateTopCW(rot)
+        # rotate back
+        rot =  Rubiks.rotateCube(rot, z_axis=False, cw=False)
+        rot =  Rubiks.rotateCube(rot, z_axis=True, cw=True)
+        return rot
+
     @staticmethod # fix me
     def rotateBackCCW(this_state : dict) -> object:
         pass
-    @staticmethod # fix me
-    def rotateRightCW(this_state : dict) -> object:
-        pass
+
+    @staticmethod # GOOD
+    def rotateRightCW(state : dict) -> object:
+        ''' this rotatation is the same as rotating the whole cube:
+            Y_axis counter-clockwise once
+            then doing TOP-Clockwise
+            then rotate back:
+            Y_axis clockwise once
+        '''
+        rot: object = Rubiks.rotateCube(state, z_axis=False, cw=False)
+        rot = Rubiks.rotateTopCW(rot)
+        # rotate back
+        rot =  Rubiks.rotateCube(rot, z_axis=False, cw=True)
+        return rot
+
     @staticmethod # fix me
     def rotateRightCCW(this_state : dict) -> object:
         pass
+
+    @staticmethod # GOOD
+    def rotateBottomCW(state : object) -> object:
+        ''' this rotatation is the same as rotating the whole cube:
+            Y_axis clockwise TWICE
+            then doing TOP-Clockwise
+            then rotate back:
+            Y_axis clockwise TWICE
+        '''
+        rot: object = Rubiks.rotateCube(state, z_axis=False, cw=True)
+        rot = Rubiks.rotateCube(rot, z_axis=False, cw=True)
+        rot = Rubiks.rotateTopCW(rot)
+        # rotate back
+        rot =  Rubiks.rotateCube(rot, z_axis=False, cw=True)
+        rot =  Rubiks.rotateCube(rot, z_axis=False, cw=True)
+        return rot    
     @staticmethod # fix me
-    def rotateBottomCW(this_state : dict) -> object:
-        pass
-    @staticmethod # fix me
+
     def rotateBottomCCW(this_state : dict) -> object:
         pass
