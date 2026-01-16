@@ -64,17 +64,15 @@ def dbg():
     newRubiks.solution_state = newRubiks.initial_state # hard coded probably in the wrong place
     solver : BrFS = BrFS(newRubiks)
 
-    print(f"init:\n{newRubiks.initial_state}")
+    print(f"init:\n{Rubiks.print_net(newRubiks.initial_state)}")
+    func1 : function = Rubiks.rotateTopCW
     
-    rot1 : object = Rubiks.rotateTopCW(state=newRubiks.initial_state)
+    rot1 : object = Rubiks.rotateLeftCW(state=newRubiks.initial_state)
     # rot2 : object = 
-    print(f"next:\n{rot1}")
+
+    print(f"{func1.__name__}:\n{Rubiks.print_net(rot1)}")
     # print(f"next:\n{rot2}")
 
-
-    # solution_node : Node = solveThePuzzle(solver, problem)
-
-    
     print("END dbg")
 
 

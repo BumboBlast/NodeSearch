@@ -139,6 +139,23 @@ class Rubiks(Problem):
     @staticmethod
     def print_state(state: str) -> str:
         return state
+    
+    @staticmethod
+    def print_net(state: str) -> str:
+        netstr : str = str()
+        netstr +=      f"\t\t\t{state[50:53]} BOTTOM\n" # BOTTOM face
+        netstr +=      f"\t\t\t{state[53:56]}\n"
+        netstr +=      f"\t\t\t{state[56:59]}\n"
+        netstr +=      f"\t\t\t{state[30:33]} BACK\n" # BACK face
+        netstr +=      f"\t\t\t{state[33:36]}\n"
+        netstr +=      f"\t\t\t{state[36:39]}\n"
+        netstr +=      f"\t LEFT {state[20:23]} {state[0:3]} {state[40:43]} RIGHT\n" # TOP face  RIGHT face
+        netstr +=      f"\t      {state[23:26]} {state[3:6]} {state[43:46]}\n"
+        netstr +=      f"\t      {state[26:29]} {state[6:9]} {state[46:49]}\n"
+        netstr +=      f"\t\t\t{state[10:13]}\ \n" # FRONT face
+        netstr +=      f"\t\t\t{state[13:16]} \ \n"
+        netstr +=      f"\t\t  FRONT {state[16:19]}  TOP\n"
+        return netstr
         
     @staticmethod
     def get_solution() -> list:
@@ -338,9 +355,19 @@ class Rubiks(Problem):
     @staticmethod # fix me
     def rotateFrontCCW(this_state : dict) -> object:
         pass
-    @staticmethod # fix me
-    def rotateLeftCW(this_state : dict) -> object:
-        pass
+    @staticmethod
+    def rotateLeftCW(state : object) -> object:
+        ''' this rotatation is the same as rotating the whole cube:
+            Y_axis clockwise once
+            then doing TOP-Clockwise
+            then rotate back:
+            Y_axis CounterClockwise once
+        '''
+        rot1: object = Rubiks.rotateCube(state, z_axis=False, cw=True)
+        rot2: object = Rubiks.rotateTopCW(rot1)
+        return Rubiks.rotateCube(rot2, z_axis=False, cw=False)
+
+
     @staticmethod # fix me
     def rotateLeftCCW(this_state : dict) -> object:
         pass
