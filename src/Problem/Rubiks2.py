@@ -1,25 +1,25 @@
 ''' Rubiks Cube!! (;
 
-    State: represented as 6 arrays of 9 integers.
+    State: represented as an array of 60 integers.
     
     Solved:
     [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0], # TOP
-        [1, 1, 1, 1, 1, 1, 1, 1, 1], # FRONT
-        [2, 2, 2, 2, 2, 2, 2, 2, 2], # LEFT
-        [3, 3, 3, 3, 3, 3, 3, 3, 3], # BACK
-        [4, 4, 4, 4, 4, 4, 4, 4, 4], # RIGHT
-        [5, 5, 5, 5, 5, 5, 5, 5, 5], # BOTTOM
+        0, 0, 0, 0, 0, 0, 0, 0, 0, # TOP
+        1, 1, 1, 1, 1, 1, 1, 1, 1, # FRONT
+        2, 2, 2, 2, 2, 2, 2, 2, 2, # LEFT
+        3, 3, 3, 3, 3, 3, 3, 3, 3, # BACK
+        4, 4, 4, 4, 4, 4, 4, 4, 4, # RIGHT
+        5, 5, 5, 5, 5, 5, 5, 5, 5, # BOTTOM
     ]
 
     Mixed up:
     [
-        [1, 2, 3, 4, 0, 0, 4, 4, 0], # TOP
-        [0, 2, 3, 0, 5, 3, 5, 2, 1], # FRONT
-        [5, 3, 2, 5, 4, 5, 3, 3, 0], # LEFT
-        [5, 4, 4, 0, 1, 0, 3, 3, 4], # BACK
-        [2, 1, 1, 1, 3, 4, 5, 1, 0], # RIGHT
-        [0, 2, 4, 1, 2, 2, 1, 2, 2], # BOTTOM
+        1, 2, 3, 4, 0, 0, 4, 4, 0, # TOP
+        0, 2, 3, 0, 5, 3, 5, 2, 1, # FRONT
+        5, 3, 2, 5, 4, 5, 3, 3, 0, # LEFT
+        5, 4, 4, 0, 1, 0, 3, 3, 4, # BACK
+        2, 1, 1, 1, 3, 4, 5, 1, 0, # RIGHT
+        0, 2, 4, 1, 2, 2, 1, 2, 2, # BOTTOM
     ]
 
     white : 0
@@ -28,33 +28,6 @@
     blue : 3
     green : 4
     orange : 5
-    
-
-    How can I ensure
-        1. relationship between faces and indices in array
-            meaning, face 1 and face 2 are the same distance as face 4 and face 5
-        2. integers represent order of colors in some standard orientation
-            meaning, i can accidently rotate the rubiks cube and 
-            be sure which way to orient the face im looking at.
-
-    I could just assume these and if i end up picking up an actual rubiks cube, just try to follow that convention.
-
-ASSUMPTION: Directions mean the following:
-            Cube is held in front of viewer and directions always refer to teh same face regardless of actions
-            meaning entire cube is never rotated at once
-
-            TOP means highest face, pointed to the sky.
-                TOP values start furthest-left away from viewer, left -> right up -> down
-            FRONT means closest face to viewer
-                FRONT values start top-left away from viewer, left -> right up -> down
-            LEFT means face to the left of FRONT
-                LEFT values start furthest-up away from viewer, left -> right up -> down
-            BACK means opposite FRONT
-                FRONT values start top-right away from viewer, right -> left, up -> down
-            RIGHT means opposite LEFT
-                RIGHT values start closest-up to the viewer, left-> right up -> down
-            BOTTOM means opposite top
-                BOTTOM values start closest-left from the viewer, left -> right up -> down
 '''
 
 from enum import Enum
@@ -77,37 +50,40 @@ class Rubiks(Problem):
         BACK = 4
         RIGHT = 5
         BOTTOM = 6
+           
+    DEFAULT_STATE : list = [ # default state; solved state - colored by their face value
+        Face.TOP.value, Face.TOP.value, Face.TOP.value, # TOP face
+        Face.TOP.value, Face.TOP.value, Face.TOP.value,
+        Face.TOP.value, Face.TOP.value, Face.TOP.value,
+        0, # this value is reserved so that the next face will start in index 10
+        Face.FRONT.value, Face.FRONT.value, Face.FRONT.value, # FRONT face
+        Face.FRONT.value, Face.FRONT.value, Face.FRONT.value,
+        Face.FRONT.value, Face.FRONT.value, Face.FRONT.value,
+        0, # this value is reserved so that the next face will start in index 20
+        Face.LEFT.value, Face.LEFT.value, Face.LEFT.value, # LEFT face
+        Face.LEFT.value, Face.LEFT.value, Face.LEFT.value,
+        Face.LEFT.value, Face.LEFT.value, Face.LEFT.value,
+        0, # this value is reserved so that the next face will start in index 30
+        Face.BACK.value, Face.BACK.value, Face.BACK.value, # BACK face
+        Face.BACK.value, Face.BACK.value, Face.BACK.value,
+        Face.BACK.value, Face.BACK.value, Face.BACK.value,
+        0, # this value is reserved so that the next face will start in index 40
+        Face.RIGHT.value, Face.RIGHT.value, Face.RIGHT.value, # RIGHT face
+        Face.RIGHT.value, Face.RIGHT.value, Face.RIGHT.value,
+        Face.RIGHT.value, Face.RIGHT.value, Face.RIGHT.value,
+        0, # this value is reserved so that the next face will start in index 50
+        Face.BOTTOM.value, Face.BOTTOM.value, Face.BOTTOM.value, # BOTTOM face
+        Face.BOTTOM.value, Face.BOTTOM.value, Face.BOTTOM.value,
+        Face.BOTTOM.value, Face.BOTTOM.value, Face.BOTTOM.value,
+    ]
                
     def __init__(self, init_state: list = list()):
         # if no init-state passed, make one at random
         super().__init__()
         self.initial_state = init_state
+        self.solution_state = Rubiks.DEFAULT_STATE
         if init_state == list():
-            self.initial_state = [ # default state; solved state - colored by their face value
-            Rubiks.Face.TOP.value, Rubiks.Face.TOP.value, Rubiks.Face.TOP.value, # TOP face
-            Rubiks.Face.TOP.value, Rubiks.Face.TOP.value, Rubiks.Face.TOP.value,
-            Rubiks.Face.TOP.value, Rubiks.Face.TOP.value, Rubiks.Face.TOP.value,
-            0, # this value is reserved so that the next face will start in index 10
-            Rubiks.Face.FRONT.value, Rubiks.Face.FRONT.value, Rubiks.Face.FRONT.value, # FRONT face
-            Rubiks.Face.FRONT.value, Rubiks.Face.FRONT.value, Rubiks.Face.FRONT.value,
-            Rubiks.Face.FRONT.value, Rubiks.Face.FRONT.value, Rubiks.Face.FRONT.value,
-            0, # this value is reserved so that the next face will start in index 20
-            Rubiks.Face.LEFT.value, Rubiks.Face.LEFT.value, Rubiks.Face.LEFT.value, # LEFT face
-            Rubiks.Face.LEFT.value, Rubiks.Face.LEFT.value, Rubiks.Face.LEFT.value,
-            Rubiks.Face.LEFT.value, Rubiks.Face.LEFT.value, Rubiks.Face.LEFT.value,
-            0, # this value is reserved so that the next face will start in index 30
-            Rubiks.Face.BACK.value, Rubiks.Face.BACK.value, Rubiks.Face.BACK.value, # BACK face
-            Rubiks.Face.BACK.value, Rubiks.Face.BACK.value, Rubiks.Face.BACK.value,
-            Rubiks.Face.BACK.value, Rubiks.Face.BACK.value, Rubiks.Face.BACK.value,
-            0, # this value is reserved so that the next face will start in index 40
-            Rubiks.Face.RIGHT.value, Rubiks.Face.RIGHT.value, Rubiks.Face.RIGHT.value, # RIGHT face
-            Rubiks.Face.RIGHT.value, Rubiks.Face.RIGHT.value, Rubiks.Face.RIGHT.value,
-            Rubiks.Face.RIGHT.value, Rubiks.Face.RIGHT.value, Rubiks.Face.RIGHT.value,
-            0, # this value is reserved so that the next face will start in index 50
-            Rubiks.Face.BOTTOM.value, Rubiks.Face.BOTTOM.value, Rubiks.Face.BOTTOM.value, # BOTTOM face
-            Rubiks.Face.BOTTOM.value, Rubiks.Face.BOTTOM.value, Rubiks.Face.BOTTOM.value,
-            Rubiks.Face.BOTTOM.value, Rubiks.Face.BOTTOM.value, Rubiks.Face.BOTTOM.value,
-            ]
+            self.initial_state = Rubiks.DEFAULT_STATE
          
 
     def get_state(self, state) -> object:
@@ -119,26 +95,41 @@ class Rubiks(Problem):
         ''' each state, you can always perform the same actions
         '''
         return [
+            Rubiks.rotateTopCW,
+            Rubiks.rotateTopCCW,
+            Rubiks.rotateFrontCW,
+            Rubiks.rotateFrontCCW,
+            Rubiks.rotateLeftCW,
+            Rubiks.rotateLeftCCW,
+            Rubiks.rotateBackCW,
+            Rubiks.rotateBackCCW,
+            Rubiks.rotateRightCW,
+            Rubiks.rotateRightCCW,
+            Rubiks.rotateBottomCW,
+            Rubiks.rotateBottomCCW,
         ]
         
     def result(self, state, action) -> object:
         ''' returns a state, given an action.
             checks legality, if illegal state, return inputted state.
         '''
+        return action(state)
         
     def step_cost(self, state, action) -> int:
         ''' returns the step cost of performing an action from a given state'''
         return 1
         
     def check_solution(self, state: object) -> bool:
-        return str(state) == str(self.solution_state)
+        print(f"check solution:\nState1: {state} = {str(state == self.solution_state)} = State2: {self.solution_state}\n{lenS1:}")
+        return state == self.solution_state
         
     def is_solvable(self) -> bool:
         ''' returns TRUE for now until i can prove which problems are solvable or not'''
         return True
+        
     @staticmethod
     def print_state(state: str) -> str:
-        return state
+        return Rubiks.print_net(state)
     
     @staticmethod
     def print_net(state: str) -> str:
@@ -152,8 +143,8 @@ class Rubiks(Problem):
         netstr +=      f"\t LEFT {state[20:23]} {state[0:3]} {state[40:43]} RIGHT\n" # TOP face  RIGHT face
         netstr +=      f"\t      {state[23:26]} {state[3:6]} {state[43:46]}\n"
         netstr +=      f"\t      {state[26:29]} {state[6:9]} {state[46:49]}\n"
-        netstr +=      f"\t\t\t{state[10:13]}\ \n" # FRONT face
-        netstr +=      f"\t\t\t{state[13:16]} \ \n"
+        netstr +=      f"\t\t\t{state[10:13]}\\ \n" # FRONT face
+        netstr +=      f"\t\t\t{state[13:16]} \\ \n"
         netstr +=      f"\t\t  FRONT {state[16:19]}  TOP\n"
         return netstr
         
@@ -176,31 +167,12 @@ class Rubiks(Problem):
         BACK    affects Top, Left, Right, Bottom
         RIGHT   affects Top, Back, Bottom, Front
         BOTTOM  affects Left, Right, Back, Front
-
-        ASSUMPTION: Directions mean the following:
-            Cube is held in front of viewer and directions always refer to teh same face regardless of actions
-            meaning entire cube is never rotated at once
-
-            TOP means highest face, pointed to the sky.
-                TOP values start furthest-left away from viewer, left -> right up -> down
-            FRONT means closest face to viewer
-                FRONT values start top-left away from viewer, left -> right up -> down
-            LEFT means face to the left of FRONT
-                LEFT values start furthest-up away from viewer, left -> right up -> down
-            BACK means opposite FRONT
-                FRONT values start top-right away from viewer, right -> left, up -> down
-            RIGHT means opposite LEFT
-                RIGHT values start closest-up to the viewer, left-> right up -> down
-            BOTTOM means opposite top
-                BOTTOM values start closest-left from the viewer, left -> right up -> down
         
-
         [] instead of 12 functions, could have switch statement.
         only difference between the functions is 
             the top bit / bottom bit  (same per face) (6 faces)
             the middle bit (same per rotation type) (2 rotations)
         so 12 cases probably only 1/10th the line count
-
     '''   
     @staticmethod
     def rotateFaceNoCascade(face: list, clockwise : bool) -> list:
@@ -315,9 +287,7 @@ class Rubiks(Problem):
         else:
             return None
         
-        
-    
-    @staticmethod # fix me
+    @staticmethod # GOOD
     def rotateTopCW(state : object) -> object:
         ''' rotating top face clockwise '''
         return [
@@ -346,30 +316,67 @@ class Rubiks(Problem):
             state[56], state[57], state[58], 
         ]
         
-    @staticmethod # fix me
-    def rotateTopCCW(this_state : dict) -> object:
-        pass
+    @staticmethod # GOOD
+    def rotateTopCCW(state : dict) -> object:
+        ''' rotating top face counter-clockwise '''
+        return [
+            state[2], state[5], state[8], # new TOP face
+            state[1], state[4], state[7], # = old TOP face rot CCW
+            state[0], state[3], state[6],
+            0, # kept empty
+            state[22], state[25], state[28], # new FRONT face
+            state[13], state[14], state[15], # = old FRONT face but
+            state[16], state[17], state[18], # 1st row is from LEFT
+            0, # kept empty
+            state[20], state[21], state[38], # new LEFT face
+            state[23], state[24], state[37], # = old LEFT face but
+            state[26], state[27], state[36], # 3rd col is from BACK
+            0, # kept empty
+            state[30], state[31], state[32], # new BACK face
+            state[33], state[34], state[35], # = old BACK face but
+            state[40], state[43], state[46], # 3rd row is from from RIGHT
+            0, # kept empty
+            state[10], state[41], state[42], # new RIGHT face
+            state[11], state[44], state[45], # = old RIGHT face but
+            state[12], state[47], state[48], # 1st col is from FRONT
+            0, # kept empty
+            state[50], state[51], state[52], # new BOTTOM face
+            state[53], state[54], state[55], # = doesnt change
+            state[56], state[57], state[58], 
+        ]
 
     @staticmethod # GOOD
     def rotateFrontCW(state : object) -> object:
         ''' this rotatation is the same as rotating the whole cube:
-            Y_axis clockwise once + Z_axis clockwise once
+            Z_axis clockwise once + Y_axis clockwise once
             then doing TOP-Clockwise
             then rotate back:
             Y_axis counter-clockwise once + Z_axis counter-clockwise once
         '''
-        rot: object = Rubiks.rotateCube(state, z_axis=False, cw=True)
-        rot = Rubiks.rotateCube(rot, z_axis=True, cw=True)
+        rot: object = Rubiks.rotateCube(state, z_axis=True, cw=True)
+        rot = Rubiks.rotateCube(rot, z_axis=False, cw=True)
         rot = Rubiks.rotateTopCW(rot)
         # rotate back
         rot =  Rubiks.rotateCube(rot, z_axis=False, cw=False)
         rot =  Rubiks.rotateCube(rot, z_axis=True, cw=False)
         return rot
 
-    @staticmethod # fix me
-    def rotateFrontCCW(this_state : dict) -> object:
-        pass
-
+    @staticmethod # GOOD
+    def rotateFrontCCW(state : object) -> object:
+        ''' this rotatation is the same as rotating the whole cube:
+            Y_axis clockwise once + Z_axis clockwise once
+            then doing TOP-CounterClockwise
+            then rotate back:
+            Y_axis counter-clockwise once + Z_axis counter-clockwise onceS
+        '''
+        rot: object = Rubiks.rotateCube(state, z_axis=True, cw=True)
+        rot = Rubiks.rotateCube(rot, z_axis=False, cw=True)
+        rot = Rubiks.rotateTopCCW(rot)
+        # rotate back
+        rot =  Rubiks.rotateCube(rot, z_axis=False, cw=False)
+        rot =  Rubiks.rotateCube(rot, z_axis=True, cw=False)
+        return rot
+        
     @staticmethod # GOOD
     def rotateLeftCW(state : object) -> object:
         ''' this rotatation is the same as rotating the whole cube:
@@ -385,29 +392,51 @@ class Rubiks(Problem):
         return rot
 
 
-    @staticmethod # fix me
-    def rotateLeftCCW(this_state : dict) -> object:
-        pass
+    @staticmethod # GOOD
+    def rotateLeftCCW(state : object) -> object:
+        ''' this rotatation is the same as rotating the whole cube:
+            Y_axis clockwise once
+            then doing TOP-CounterClockwise
+            then rotate back:
+            Y_axis CounterClockwise once
+        '''
+        rot: object = Rubiks.rotateCube(state, z_axis=False, cw=True)
+        rot = Rubiks.rotateTopCCW(rot)
+        # rotate back
+        rot =  Rubiks.rotateCube(rot, z_axis=False, cw=False)
+        return rot
         
     @staticmethod # GOOD
     def rotateBackCW(state : object) -> object:
         ''' this rotatation is the same as rotating the whole cube:
-            Y_axis clockwise  + Z_axis counter-clockwise once
+            Z_axis counter-clockwise once + Y_axis clockwise once
             then doing TOP-Clockwise
             then rotate back:
             Y_axis counter-clockwise + Z_axis clockwise once
         '''
-        rot: object = Rubiks.rotateCube(state, z_axis=False, cw=True)
-        rot = Rubiks.rotateCube(rot, z_axis=True, cw=False)
+        rot: object = Rubiks.rotateCube(state, z_axis=True, cw=False)
+        rot = Rubiks.rotateCube(rot, z_axis=False, cw=True)
         rot = Rubiks.rotateTopCW(rot)
         # rotate back
         rot =  Rubiks.rotateCube(rot, z_axis=False, cw=False)
         rot =  Rubiks.rotateCube(rot, z_axis=True, cw=True)
         return rot
 
-    @staticmethod # fix me
-    def rotateBackCCW(this_state : dict) -> object:
-        pass
+    @staticmethod # GOOD
+    def rotateBackCCW(state : object) -> object:
+        ''' this rotatation is the same as rotating the whole cube:
+            Z_axis counter-clockwise once + Y_axis clockwise once
+            then doing TOP-CounterClockwise
+            then rotate back:
+            Y_axis counter-clockwise + Z_axis clockwise once
+        '''
+        rot: object = Rubiks.rotateCube(state, z_axis=True, cw=False)
+        rot = Rubiks.rotateCube(rot, z_axis=False, cw=True)
+        rot = Rubiks.rotateTopCCW(rot)
+        # rotate back
+        rot =  Rubiks.rotateCube(rot, z_axis=False, cw=False)
+        rot =  Rubiks.rotateCube(rot, z_axis=True, cw=True)
+        return rot
 
     @staticmethod # GOOD
     def rotateRightCW(state : dict) -> object:
@@ -423,9 +452,19 @@ class Rubiks(Problem):
         rot =  Rubiks.rotateCube(rot, z_axis=False, cw=True)
         return rot
 
-    @staticmethod # fix me
-    def rotateRightCCW(this_state : dict) -> object:
-        pass
+    @staticmethod # GOOD
+    def rotateRightCCW(state : object) -> object:
+        ''' this rotatation is the same as rotating the whole cube:
+            Y_axis counter-clockwise once
+            then doing TOP-CounterClockwise
+            then rotate back:
+            Y_axis clockwise once
+        '''
+        rot: object = Rubiks.rotateCube(state, z_axis=False, cw=False)
+        rot = Rubiks.rotateTopCCW(rot)
+        # rotate back
+        rot =  Rubiks.rotateCube(rot, z_axis=False, cw=True)
+        return rot
 
     @staticmethod # GOOD
     def rotateBottomCW(state : object) -> object:
@@ -442,7 +481,19 @@ class Rubiks(Problem):
         rot =  Rubiks.rotateCube(rot, z_axis=False, cw=True)
         rot =  Rubiks.rotateCube(rot, z_axis=False, cw=True)
         return rot    
-    @staticmethod # fix me
-
-    def rotateBottomCCW(this_state : dict) -> object:
-        pass
+        
+    @staticmethod # GOOD
+    def rotateBottomCCW(state : object) -> object:
+        ''' this rotatation is the same as rotating the whole cube:
+            Y_axis clockwise TWICE
+            then doing TOP-CounterClockwise
+            then rotate back:
+            Y_axis clockwise TWICE
+        '''
+        rot: object = Rubiks.rotateCube(state, z_axis=False, cw=True)
+        rot = Rubiks.rotateCube(rot, z_axis=False, cw=True)
+        rot = Rubiks.rotateTopCCW(rot)
+        # rotate back
+        rot =  Rubiks.rotateCube(rot, z_axis=False, cw=True)
+        rot =  Rubiks.rotateCube(rot, z_axis=False, cw=True)
+        return rot
