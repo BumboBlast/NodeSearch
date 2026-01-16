@@ -59,20 +59,44 @@ def dbg():
     #     solution_node : Node = solver.search()
     #     return solution_node
 
-    newRubiks : Rubiks = Rubiks()
-    # newRubiks.initial_state = r0.copy()
-    newRubiks.solution_state = newRubiks.initial_state # hard coded probably in the wrong place
-    solver : BrFS = BrFS(newRubiks)
-
-    print(f"init:\n{Rubiks.print_net(newRubiks.initial_state)}")
-    func1 : function = Rubiks.rotateBackCW
+    newRubiks : Rubiks = Rubiks([
+        4,1,1,
+        4,1,1,
+        4,1,1,
+        0,
+        1,2,2,
+        1,2,2,
+        1,2,2,
+        0,
+        3,3,3,
+        3,3,3,
+        3,3,3,
+        0,
+        6,4,4,
+        6,4,4,
+        6,4,4,
+        0,
+        5,5,5,
+        5,5,5,
+        5,5,5,
+        0,
+        2,6,6,
+        2,6,6,
+        2,6,6,
+    ])
     
-    rot1 : object = func1(state=newRubiks.initial_state)
-    # rot2 : object = 
-
-    print(f"{func1.__name__}:\n{Rubiks.print_net(rot1)}")
-    # print(f"next:\n{rot2}")
-
+    # newRubiks.solution_state = newRubiks.initial_state # hard coded probably in the wrong place
+    solver : BrFS = BrFS(newRubiks)
+    
+    print(f"init:\n{Rubiks.print_state(newRubiks.initial_state)}")
+    print(f"solution: {Rubiks.DEFAULT_STATE}")
+    print(f"solvable: {str(newRubiks.is_solvable())}")
+    # print(f"frontier size: {len(solver.qFrontier)}")
+    # print(f"explored: {solver.explored}")
+    solution_node : Node = solver.search()
+    
+    
+    # print(f"rotate Left CCW: {Rubiks.rotateLeftCCW(newRubiks.initial_state)}")
     print("END dbg")
 
 
