@@ -82,7 +82,7 @@ class Rubiks(Problem):
         self.initial_state = init_state
         self.solution_state = Rubiks.DEFAULT_STATE
         if init_state == list():
-            self.initial_state = self.gen_random_solvable_state(self.solution_state, depth=5)
+            self.initial_state = self.gen_random_solvable_state(self.solution_state, depth=6)
 
     def get_state(self, state) -> object:
         ''' returns state (getter) '''
