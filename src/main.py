@@ -13,6 +13,7 @@
         [] do a ton of refactoring:
             [] either make hanoi use strings
             [] or make the algorithms not need to use immutable types??
+            [] or make sure Node.state always returns a hashable
 '''
 import traceback
 import sys
@@ -26,10 +27,25 @@ import SolveProblem.SolveRubiks
 def dbg():
     print("START dbg")
     
-    from Problem.Rubiks2 import Rubiks
+    from Problem.Rubiks import Rubiks
     from SearchAlgorithm.SearchBreadthFirst import BrFS
     from Node import Node
     from SearchAlgorithm.Solver import Solver
+
+
+    def print_solution(solver: Solver, solution_node: Node, max_solution_len: int = 100, reverse: bool = False):
+        solution_chain: list = solver.get_solution(solution_node)
+        if len(solution_chain) <= 0:
+            print('No solution ):')
+            return
+        print(f'solution is {len(solution_chain)} nodes long')
+        if len(solution_chain) > max_solution_len:
+            print('Solution to long to print')
+            return
+        if reverse:
+            solution_chain.reverse()
+        for n in solution_chain[::-1]:
+            print(str(n))
 
     # puzzle 0 -> solved
     # r0 = {
@@ -94,9 +110,8 @@ def dbg():
     # print(f"frontier size: {len(solver.qFrontier)}")
     # print(f"explored: {solver.explored}")
     solution_node : Node = solver.search()
-    
-    
-    # print(f"rotate Left CCW: {Rubiks.rotateLeftCCW(newRubiks.initial_state)}")
+    print_solution(solver, solution_node)
+
     print("END dbg")
 
 

@@ -33,7 +33,7 @@ class Node:
     def get_state(self) -> object:
         ''' returns the state, but in a getter so can return a hashable or something maybe'''
         # print('called get state')
-        return self.state
+        return str(self.state)
 
     def set_state(self, new_state: object) -> None:
         ''' assigns state, but in a setter so can insert whatever i want in the call '''
@@ -73,9 +73,9 @@ class Node:
         orderedNodeChain: list = list()
         for __ in range(0, 100_000):
             if myNode.action:
-                orderedNodeChain.append({myNode.state : myNode.action.__name__})
+                orderedNodeChain.append({myNode.get_state() : myNode.action.__name__})
             else:
-                orderedNodeChain.append({myNode.state : 'Root'})
+                orderedNodeChain.append({myNode.get_state() : 'Root'})
             
             if myNode.parent:
                 myNode = myNode.parent
