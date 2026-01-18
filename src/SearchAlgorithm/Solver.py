@@ -9,8 +9,8 @@ class Solver:
         pass
 
     @staticmethod
-    def get_solution(solution_node: Node | object) -> list:
+    def get_solution(solution_node: Node | object, short: bool=False) -> list:
         solution_chain: list = list()
         if solution_node:
-            solution_chain = Node.getNodeChainIterative(solution_node, short=True)
+            solution_chain = Node.getNodeChainIterative(solution_node, short)
         return solution_chain

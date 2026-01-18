@@ -46,7 +46,7 @@ def print_solution(solver: Solver, solution_node: Node, max_solution_len: int = 
     if reverse:
         solution_chain.reverse()
     for n in solution_chain[::-1]:
-        print(str(n))
+        print(n)
 
 
 search_algorithms: dict = {
@@ -63,6 +63,7 @@ def solve_EightPuzzle():
     # get problem
     problem: EightPuzzle = getSomePuzzles()[2]
     problem.solution_state = '012345678' # hard coded probably in the wrong place
+    Node.problem = problem
     
     # get solver object and user argument
     user_arg : str = None

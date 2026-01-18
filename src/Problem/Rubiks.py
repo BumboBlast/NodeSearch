@@ -32,7 +32,6 @@
 
 from enum import Enum
 from Problem.Problem import Problem
-# import random
 
 class Rubiks(Problem):
     class Color(Enum):
@@ -83,8 +82,7 @@ class Rubiks(Problem):
         self.initial_state = init_state
         self.solution_state = Rubiks.DEFAULT_STATE
         if init_state == list():
-            self.initial_state = Rubiks.DEFAULT_STATE
-         
+            self.initial_state = self.gen_random_solvable_state(self.solution_state, depth=5)
 
     def get_state(self, state) -> object:
         ''' returns state (getter) '''
@@ -125,10 +123,24 @@ class Rubiks(Problem):
     def is_solvable(self) -> bool:
         ''' returns TRUE for now until i can prove which problems are solvable or not'''
         return True
-        
-    @staticmethod
-    def print_state(state: str) -> str:
+    
+    def __str__():
         return Rubiks.print_net(state)
+
+    @staticmethod
+    def print_state(state: str, small: bool = False) -> str:
+        if small:
+            return Rubiks.print_state_small(state)
+        else:
+            return str(state)
+
+    @staticmethod    
+    def print_state_small(state: str) -> str:
+        retstr : str = str()
+        for a in state:
+            if str.isnumeric(a):
+                retstr += str(a)
+        return retstr
     
     @staticmethod
     def print_net(state: str) -> str:

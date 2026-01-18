@@ -15,10 +15,11 @@ from MemoryTracking import track
 import sys
 
 ''' puzzles '''
+
 def getSomePuzzles() -> list:
     puzzleList : list = list()
     puzzleList.append(Rubiks()) # random puzzle
-    puzzleList.append(Rubiks([ # custom init-state
+    puzzleList.append(Rubiks([ # custom init-state - one rotatios
         4,1,1,
         4,1,1,
         4,1,1,
@@ -42,7 +43,33 @@ def getSomePuzzles() -> list:
         2,6,6,
         2,6,6,
         2,6,6,
+    ])),
+    puzzleList.append(Rubiks([ # custom init-state - two rotatios
+        6, 6, 6,
+        1, 1, 1,
+        3, 3, 3,
+        0,
+        2, 2, 2,
+        2, 2, 2,
+        2, 2, 2,
+        0,
+        5, 5, 5,
+        3, 3, 3,
+        6, 6, 6,
+        0,
+        4, 4, 4,
+        4, 4, 4,
+        4, 4, 4,
+        0,
+        3, 3, 3,
+        5, 5, 5,
+        1, 1, 1,
+        0,
+        5, 5, 5,
+        6, 6, 6,
+        1, 1, 1
     ]))
+    puzzleList.append(Rubiks(Rubiks.DEFAULT_STATE))
     return puzzleList
 
 @track
@@ -55,7 +82,7 @@ def solveThePuzzle(solver: Solver, problem: Problem) -> Node:
     return solution_node
 
 def print_solution(solver: Solver, solution_node: Node, max_solution_len: int = 100, reverse: bool = False):
-    solution_chain: list = solver.get_solution(solution_node)
+    solution_chain: list = solver.get_solution(solution_node, short=True)
     if len(solution_chain) <= 0:
         print('No solution ):')
         return
@@ -65,8 +92,11 @@ def print_solution(solver: Solver, solution_node: Node, max_solution_len: int = 
         return
     if reverse:
         solution_chain.reverse()
+
+    # display solution
+    print("  TOP       FRONT     LEFT      BACK      RIGHT     BOTTOM")
     for n in solution_chain[::-1]:
-        print(str(n))
+        print(n)
 
 
 search_algorithms: dict = {
@@ -82,15 +112,15 @@ search_algorithms: dict = {
 def solve_Rubiks():
 
     # get problem
-    problem: Rubiks = getSomePuzzles()[1]
+    problem: Rubiks = getSomePuzzles()[0]
 
     # get solver object and user argument
     user_arg : str = None
     solver : Solver = None
+    Node.problem = problem
     try:
         user_arg = sys.argv[2]
         solver = search_algorithms[user_arg](problem)
-        print('here')
     except Exception as e:
         tb = traceback.format_exc()
         print(tb)

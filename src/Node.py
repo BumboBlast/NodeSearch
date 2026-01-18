@@ -10,6 +10,9 @@ from __future__ import annotations
 from Problem.Problem import Problem
 
 class Node:
+    # hopefully static
+    problem : Problem = None
+
     def __init__(self, parent : Node | None = None, state: str | None = ''):
         self.state : str = state
         self.parent : Node | None = parent
@@ -60,22 +63,22 @@ class Node:
             Node.chainStr += Node.getNodeChainRecursive(myNode.parent, short)
         
         if myNode.action:
-            Node.chainStr += myNode.state + '\t' + myNode.action.__name__ + '\n'
+            Node.chainStr += myNode.get_state() + '\t' + myNode.action.__name__ + '\n'
         else:
-            Node.chainStr += myNode.state + '\t' + 'Root' + '\n'
+            Node.chainStr += myNode.get_state() + '\t' + 'Root' + '\n'
         return Node.chainStr
     
     @staticmethod
-    def getNodeChainIterative(myNode: Node, short: bool = True) -> list:
+    def getNodeChainIterative(myNode: Node, short: bool = False) -> list:
         ''' Return list of str for each node, starting with self going up through its parent and so on
         until root (no parent).
         '''
         orderedNodeChain: list = list()
         for __ in range(0, 100_000):
             if myNode.action:
-                orderedNodeChain.append({myNode.get_state() : myNode.action.__name__})
+                orderedNodeChain.append({Node.problem.print_state(myNode.get_state(), short) : myNode.action.__name__})
             else:
-                orderedNodeChain.append({myNode.get_state() : 'Root'})
+                orderedNodeChain.append({Node.problem.print_state(myNode.get_state(), short) : 'Root'})
             
             if myNode.parent:
                 myNode = myNode.parent

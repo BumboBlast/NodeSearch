@@ -21,6 +21,7 @@ class BrFS(Solver):
         # problem "gets the state" so it can optionally return a hashable.
         self.explored.add(problem.get_state(self.root.state))
         # gen frontier
+        # self.qFrontier.appendleft(self.root) # do i need this? 
         self.expandFrontier(self.root)
 
     ''' -------------- SEARCH -----------------
@@ -48,6 +49,13 @@ class BrFS(Solver):
         only if not in the frontier or explored set
         '''
         print('Breadth First: (:')
+        # check if 1st node is already solution
+        # if the node contains a goal state then return the corresponding solution
+        if self.problem.check_solution(self.root.get_state()):
+            print('\n')
+            print('breast first search, done(:')
+            print('nodes explroed: ', len(self.explored))
+            return self.root
 
         # check if this is solvable
         if not self.problem.is_solvable():
@@ -71,7 +79,7 @@ class BrFS(Solver):
                 print('breast first search, done(:')
                 print('nodes explroed: ', len(self.explored))
                 return chosenLeaf
-            
+
             # add the node to the explored set
             self.explored.add(chosenLeaf.get_state())
 

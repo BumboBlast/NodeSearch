@@ -32,85 +32,12 @@ def dbg():
     from Node import Node
     from SearchAlgorithm.Solver import Solver
 
-
-    def print_solution(solver: Solver, solution_node: Node, max_solution_len: int = 100, reverse: bool = False):
-        solution_chain: list = solver.get_solution(solution_node)
-        if len(solution_chain) <= 0:
-            print('No solution ):')
-            return
-        print(f'solution is {len(solution_chain)} nodes long')
-        if len(solution_chain) > max_solution_len:
-            print('Solution to long to print')
-            return
-        if reverse:
-            solution_chain.reverse()
-        for n in solution_chain[::-1]:
-            print(str(n))
-
-    # puzzle 0 -> solved
-    # r0 = {
-        # Rubiks.Face.TOP     : [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        # Rubiks.Face.FRONT   : [1, 1, 1, 1, 1, 1, 1, 1, 1],
-        # Rubiks.Face.LEFT    : [2, 2, 2, 2, 2, 2, 2, 2, 2],
-        # Rubiks.Face.BACK    : [3, 3, 3, 3, 3, 3, 3, 3, 3],
-        # Rubiks.Face.RIGHT   : [4, 4, 4, 4, 4, 4, 4, 4, 4],
-        # Rubiks.Face.BOTTOM  : [5, 5, 5, 5, 5, 5, 5, 5, 5],
-    # }
-
-    # # puzzle 1 -> scrambled
-    # r1 = {
-        # "TOP" : [],
-        # "FRONT" : [],
-        # "LEFT" : [],
-        # "BACK" : [],
-        # "RIGHT" : [],
-        # "BOTTOM" : []
-    # }
-
-    # def solveThePuzzle(solver: Solver, problem: Problem) -> Node:
-    #     ''' Returns the solution Node.
-    #     '''    
-    #     print('init:\n' + Rubiks.print_state(problem.initial_state))
-    #     print('solvable: ' + str(problem.is_solvable()))
-    #     solution_node : Node = solver.search()
-    #     return solution_node
-
-    newRubiks : Rubiks = Rubiks([
-        4,1,1,
-        4,1,1,
-        4,1,1,
-        0,
-        1,2,2,
-        1,2,2,
-        1,2,2,
-        0,
-        3,3,3,
-        3,3,3,
-        3,3,3,
-        0,
-        6,4,4,
-        6,4,4,
-        6,4,4,
-        0,
-        5,5,5,
-        5,5,5,
-        5,5,5,
-        0,
-        2,6,6,
-        2,6,6,
-        2,6,6,
-    ])
-    
-    # newRubiks.solution_state = newRubiks.initial_state # hard coded probably in the wrong place
-    solver : BrFS = BrFS(newRubiks)
-    
-    print(f"init:\n{Rubiks.print_state(newRubiks.initial_state)}")
-    print(f"solution: {Rubiks.DEFAULT_STATE}")
-    print(f"solvable: {str(newRubiks.is_solvable())}")
-    # print(f"frontier size: {len(solver.qFrontier)}")
-    # print(f"explored: {solver.explored}")
-    solution_node : Node = solver.search()
-    print_solution(solver, solution_node)
+    r : Rubiks = Rubiks()
+    print(r.initial_state)
+    rot = Rubiks.rotateBackCCW(r.initial_state)
+    rot = Rubiks.rotateBackCCW(rot)
+    rot = Rubiks.rotateFrontCW(rot)
+    print(f"rot:{rot}, type:{type(rot)}")
 
     print("END dbg")
 

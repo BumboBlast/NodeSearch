@@ -60,7 +60,7 @@ class EightPuzzle(Problem):
         return inversions % 2 == 0
 
     @staticmethod
-    def print_state(state: str) -> str:
+    def print_state(state: str, short: bool = False) -> str:
         '''print the state of the puzzle as a rectangle
         x = i % width;    // % is the "modulo operator", the remainder of i / width;
         y = i / width;    // where "/" is an integer division
