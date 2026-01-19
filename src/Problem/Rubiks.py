@@ -50,7 +50,7 @@ class Rubiks(Problem):
         RIGHT = 5
         BOTTOM = 6
            
-    DEFAULT_STATE : list = [ # default state; solved state - colored by their face value
+    DEFAULT_STATE : str = "".join(map(str,[ # default state; solved state - colored by their face value
         Face.TOP.value, Face.TOP.value, Face.TOP.value, # TOP face
         Face.TOP.value, Face.TOP.value, Face.TOP.value,
         Face.TOP.value, Face.TOP.value, Face.TOP.value,
@@ -74,7 +74,7 @@ class Rubiks(Problem):
         Face.BOTTOM.value, Face.BOTTOM.value, Face.BOTTOM.value, # BOTTOM face
         Face.BOTTOM.value, Face.BOTTOM.value, Face.BOTTOM.value,
         Face.BOTTOM.value, Face.BOTTOM.value, Face.BOTTOM.value,
-    ]
+    ]))
                
     def __init__(self, init_state: list = list()):
         # if no init-state passed, make one at random
@@ -82,7 +82,8 @@ class Rubiks(Problem):
         self.initial_state = init_state
         self.solution_state = Rubiks.DEFAULT_STATE
         if init_state == list():
-            self.initial_state = self.gen_random_solvable_state(self.solution_state, depth=6)
+            # self.initial_state = self.gen_random_solvable_state(self.solution_state, depth=2)
+            self.initial_state = Rubiks.DEFAULT_STATE
 
     def get_state(self, state) -> object:
         ''' returns state (getter) '''

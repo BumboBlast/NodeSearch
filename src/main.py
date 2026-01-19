@@ -34,10 +34,6 @@ def dbg():
 
     r : Rubiks = Rubiks()
     print(r.initial_state)
-    rot = Rubiks.rotateBackCCW(r.initial_state)
-    rot = Rubiks.rotateBackCCW(rot)
-    rot = Rubiks.rotateFrontCW(rot)
-    print(f"rot:{rot}, type:{type(rot)}")
 
     print("END dbg")
 
