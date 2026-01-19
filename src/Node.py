@@ -36,7 +36,7 @@ class Node:
     def get_state(self) -> object:
         ''' returns the state, but in a getter so can return a hashable or something maybe'''
         # print('called get state')
-        return str(self.state)
+        return self.state
 
     def set_state(self, new_state: object) -> None:
         ''' assigns state, but in a setter so can insert whatever i want in the call '''

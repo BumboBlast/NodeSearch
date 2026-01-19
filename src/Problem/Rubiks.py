@@ -82,8 +82,8 @@ class Rubiks(Problem):
         self.initial_state = init_state
         self.solution_state = Rubiks.DEFAULT_STATE
         if init_state == list():
-            # self.initial_state = self.gen_random_solvable_state(self.solution_state, depth=2)
-            self.initial_state = Rubiks.DEFAULT_STATE
+            self.initial_state = self.gen_random_solvable_state(self.solution_state, depth=7)
+            # self.initial_state = Rubiks.DEFAULT_STATE
 
     def get_state(self, state) -> object:
         ''' returns state (getter) '''
@@ -119,7 +119,7 @@ class Rubiks(Problem):
         return 1
         
     def check_solution(self, state: object) -> bool:
-        return str(state) == str(self.solution_state)
+        return state == self.solution_state
         
     def is_solvable(self) -> bool:
         ''' returns TRUE for now until i can prove which problems are solvable or not'''
@@ -162,7 +162,7 @@ class Rubiks(Problem):
         
     @staticmethod
     def get_solution() -> list:
-        pass
+        return self.solution_state
 
 
     '''Rubiks Cube Actions - Corresponding to rotating each face either positively (CW) or negatively (CCW)
@@ -201,18 +201,20 @@ class Rubiks(Problem):
             Clockwise (CW)
             [1 2 3 4 5 6 7 8 9] -> [7 4 1 8 5 2 9 6 3]
         '''
+        face_list : list = list()
         if clockwise:
-            return [
+            face_list = [
                 face[6], face[3], face[0],
                 face[7], face[4], face[1],
                 face[8], face[5], face[2],
             ]
         else: # counter clock wise
-            return [
+            face_list = [
                 face[2], face[5], face[8],
                 face[1], face[4], face[7],
                 face[0], face[3], face[6],
         ]
+        return "".join(map(str, face_list))
     
     @staticmethod
     def rotateCube(state: object, z_axis: bool, cw: bool) -> object:
@@ -227,11 +229,11 @@ class Rubiks(Problem):
             cube state = list of 59 integers. each value with a 9 is kept blank.
             ranges: [0-8] [10-18] [20-28] ... [50-58]
         '''
-        
-        if type(state) == list:
+        cube_list : list = list()
+        if type(state) == str:
             if z_axis:
                 if cw:
-                    return [
+                    cube_list = [
                         state[6], state[3], state[0], # new TOP face
                         state[7], state[4], state[1], # = rotated CW
                         state[8], state[5], state[2],
@@ -265,7 +267,7 @@ class Rubiks(Problem):
             # if NOT z_axis:
             else:
                 if cw:
-                    return [
+                    cube_list = [
                         state[20], state[21], state[22], # new TOP face
                         state[23], state[24], state[25], # = old LEFT face
                         state[26], state[27], state[28],
@@ -298,11 +300,12 @@ class Rubiks(Problem):
             
         else:
             return None
-        
+        return "".join(map(str, cube_list))
     @staticmethod # GOOD
     def rotateTopCW(state : object) -> object:
         ''' rotating top face clockwise '''
-        return [
+        face_list : list = list()
+        face_list = [
             state[6], state[3], state[0], # new TOP face
             state[7], state[4], state[1], # = old TOP face rot CW
             state[8], state[5], state[2],
@@ -327,11 +330,12 @@ class Rubiks(Problem):
             state[53], state[54], state[55], # = doesnt change
             state[56], state[57], state[58], 
         ]
+        return "".join(map(str, face_list))
         
     @staticmethod # GOOD
     def rotateTopCCW(state : dict) -> object:
         ''' rotating top face counter-clockwise '''
-        return [
+        face_list = [
             state[2], state[5], state[8], # new TOP face
             state[1], state[4], state[7], # = old TOP face rot CCW
             state[0], state[3], state[6],
@@ -356,6 +360,7 @@ class Rubiks(Problem):
             state[53], state[54], state[55], # = doesnt change
             state[56], state[57], state[58], 
         ]
+        return "".join(map(str, face_list))
 
     @staticmethod # GOOD
     def rotateFrontCW(state : object) -> object:
