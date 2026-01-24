@@ -83,7 +83,7 @@ class Rubiks(Problem):
         self.initial_state = init_state
         self.solution_state = Rubiks.DEFAULT_STATE
         if init_state == list():
-            self.initial_state = self.gen_random_solvable_state(self.solution_state, depth=3)
+            self.initial_state = self.gen_random_solvable_state(self.solution_state, depth=4)
             # self.initial_state = Rubiks.DEFAULT_STATE
 
     def get_state(self, state) -> object:
@@ -353,9 +353,9 @@ class Rubiks(Problem):
             state[33], state[34], state[35], # = old BACK face but
             state[40], state[43], state[46], # 3rd row is from from RIGHT
             0, # kept empty
-            state[10], state[41], state[42], # new RIGHT face
+            state[12], state[41], state[42], # new RIGHT face
             state[11], state[44], state[45], # = old RIGHT face but
-            state[12], state[47], state[48], # 1st col is from FRONT
+            state[10], state[47], state[48], # 1st col is from FRONT
             0, # kept empty
             state[50], state[51], state[52], # new BOTTOM face
             state[53], state[54], state[55], # = doesnt change
