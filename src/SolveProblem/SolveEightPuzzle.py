@@ -35,7 +35,7 @@ def solveThePuzzle(solver: Solver, problem: Problem) -> Node:
     return solution_node
 
 def print_solution(solver: Solver, solution_node: Node, max_solution_len: int = 100, reverse: bool = False):
-    solution_chain: list = solver.get_solution(solution_node)
+    solution_chain: list = solver.get_solution(solution_node, short=True)
     if len(solution_chain) <= 0:
         print('No solution ):')
         return

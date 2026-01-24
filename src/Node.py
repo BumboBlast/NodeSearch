@@ -76,9 +76,9 @@ class Node:
         orderedNodeChain: list = list()
         for __ in range(0, 100_000):
             if myNode.action:
-                orderedNodeChain.append({Node.problem.print_state(myNode.get_state(), short) : myNode.action.__name__})
+                orderedNodeChain.append(f"{Node.problem.print_state(myNode.get_state(), short)} : {myNode.action.__name__}")
             else:
-                orderedNodeChain.append({Node.problem.print_state(myNode.get_state(), short) : 'Root'})
+                orderedNodeChain.append(f"{Node.problem.print_state(myNode.get_state(), short)} : Root")
             
             if myNode.parent:
                 myNode = myNode.parent

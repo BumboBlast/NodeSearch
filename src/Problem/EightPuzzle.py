@@ -65,6 +65,8 @@ class EightPuzzle(Problem):
         x = i % width;    // % is the "modulo operator", the remainder of i / width;
         y = i / width;    // where "/" is an integer division
         '''
+        if short:
+            return state
         ret_str : str = str()
         _iter : int = 0
         for _ in range(0, EightPuzzle.DIMENSIONS[0]):
@@ -73,7 +75,7 @@ class EightPuzzle(Problem):
                 row.append(state[_iter])
                 _iter += 1
             ret_str += str(row) + '\n'
-        return(str(ret_str))
+        return(ret_str)
 
     '''Eight Puzzle Actions - Corresponding to moving the "space" tile
     '''    

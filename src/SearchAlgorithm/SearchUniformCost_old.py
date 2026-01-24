@@ -50,10 +50,23 @@ class UniformCost(Solver):
     def expandFrontier(self, node_to_expand: Node):
         ''' Modifies self.qFrontier, push_backs new nodes by expanding argument node for each action.
         '''
-
+        for action in self.problem.get_actions(node_to_expand.state):
+            child : Node = node_to_expand.child_node(self.problem, action)
+            if child.state == node_to_expand.state:
+                continue
+            entry = [child.path_cost, child.state]
+            # if (child.state not in self.explored) and (child.state not in self.qFrontier):
+            if (child.state not in self.explored) and (child.state not in self.frontierHash):
+                heapq.heappush(self.qFrontier, entry)
+                self.frontierHash[child.state] = child
+            elif child.state in self.frontierHash:
+                current_frontier_node: Node = self.frontierHash[child.state]
+                if current_frontier_node.path_cost > child.path_cost:
+                    self.qFrontier[self.qFrontier.index(child.state)] = child.state
+                    self.frontierHash[child.state] = entry
     
     def search(self) -> Node | None:
-        ''' 
+        ''' See src/SearchBreadthFirst.py
         '''
         print('Uniform-Cost (:')
 
@@ -68,4 +81,17 @@ class UniformCost(Solver):
                 return None
             
             # pop node (pop lowest path cost)
- 
+            chosen_leaf_state: str  = heapq.heappop(self.qFrontier)[1]
+            chosen_leaf: Node = self.frontierHash[chosen_leaf_state]
+            self.frontierHash.pop(chosen_leaf.state)
+
+            if chosen_leaf.state == self.problem.solution_state:
+                print('\n')
+                print('done (;\n')
+                return chosen_leaf
+            self.explored.add(chosen_leaf.state)
+            self.expandFrontier(chosen_leaf)
+
+            if len(self.qFrontier) % 1_000 == 0:
+                print('size of frontier: ' + str(len(self.qFrontier)), end='\r')
+        print('done (;\n')
