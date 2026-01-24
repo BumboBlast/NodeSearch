@@ -45,9 +45,7 @@ try:
                 roundedMemBefore = round(roundedMemBefore / int(10 ** (order - 1)), 3)
                 roundedMemAfter = round(roundedMemAfter / int(10 ** (order - 1)), 3)
                 roundedMemComsumed = round(roundedMemComsumed / int(10 ** (order - 1)), 3)
-
-
-
+                
             print("---------------------")
             print(
                 f"{func.__name__}:\n",
