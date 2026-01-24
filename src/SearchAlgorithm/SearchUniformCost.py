@@ -120,7 +120,13 @@ class UniformCost(Solver):
                 return None
 
             # node ← POP(frontier) /* chooses the lowest-cost node in frontier */
-            chosen_leaf : Node = heapq.heappop(self.heapFrontier)[-1]
+            # remove from both heap and frontier
+            while self.heapFrontier:
+                priority, insert_id, task = heapq.heappop(self.heapFrontier)
+                if task is not REMOVED:
+                    del self.frontierLKP[task.state]
+                    chosen_leaf : Node = task
+                    break
 
             # if problem.GOAL-TEST(node.STATE) then return SOLUTION(node)
             if chosen_leaf.state == self.problem.solution_state:

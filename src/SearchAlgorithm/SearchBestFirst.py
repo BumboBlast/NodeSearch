@@ -47,8 +47,6 @@ class BestFirst(Solver):
             print(dir(self.problem))
             self.evaluating_function = default_evaluating
 
-        print(f"Using evaluating function: {self.evaluating_function.__name__}")
-
         #initialize frontier and explored (both unique)
         # priority queue, ordered by path cost
         # heapFrontier contains tuple, (priority , insert_order, task)
@@ -107,7 +105,8 @@ class BestFirst(Solver):
     def search(self) -> Node | None:
         ''' 
         '''
-        print('Uniform-Cost (:')
+        print('Best-First(:')
+        print(f"Using evaluating function: {self.evaluating_function.__name__}")
         
         # check if this is solvable
         if not self.problem.is_solvable():
@@ -122,7 +121,13 @@ class BestFirst(Solver):
                 return None
 
             # node ← POP(frontier) /* chooses the lowest-cost node in frontier */
-            chosen_leaf : Node = heapq.heappop(self.heapFrontier)[-1]
+            # remove from both heap and frontier
+            while self.heapFrontier:
+                priority, insert_id, task = heapq.heappop(self.heapFrontier)
+                if task is not REMOVED:
+                    del self.frontierLKP[task.state]
+                    chosen_leaf : Node = task
+                    break
 
             # if problem.GOAL-TEST(node.STATE) then return SOLUTION(node)
             if chosen_leaf.state == self.problem.solution_state:
