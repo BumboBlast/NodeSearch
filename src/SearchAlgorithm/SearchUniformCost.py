@@ -40,12 +40,11 @@ class UniformCost(Solver):
         self.root.state = self.problem.initial_state
 
         #initialize frontier and explored (both unique)
-        self.qFrontier: list = list() # priority queue, ordered by path cost
-        self.frontierHash : dict = dict()
-        self.qFrontier.append([self.root.path_cost, self.root.state])
-        self.frontierHash[self.root.state] = self.root
+        # priority queue, ordered by path cost
+        # heapFrontier contains tuple, (priority ,  task)
+        self.heapFrontier: list = list() 
+        heapq.heappush(self.heapFrontier, (0, self.root.state))
         self.explored: set = set()
-        # self.explored.add(self.root.state)
     
     def expandFrontier(self, node_to_expand: Node):
         ''' Modifies self.qFrontier, push_backs new nodes by expanding argument node for each action.
@@ -56,7 +55,7 @@ class UniformCost(Solver):
         ''' 
         '''
         print('Uniform-Cost (:')
-
+        return None
         # check if this is solvable
         if not self.problem.is_solvable():
             return None
