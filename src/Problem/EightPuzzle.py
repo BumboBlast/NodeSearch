@@ -116,3 +116,35 @@ class EightPuzzle(Problem):
         new_state: str = this_state[:_blankIndex] + this_state[_downIndex] + this_state[_blankIndex+1:_downIndex]\
               + EightPuzzle.BLANK + this_state[_downIndex+1:]
         return new_state
+
+    ''' ------------ Evaluating Functions as Heuristics ----------
+    '''
+
+    @staticmethod
+    def manhattanDistance(state: str) -> int:
+        ''' return the sum of the manhattan distances for each tile in the eight puzzle
+        manhattan distance means counting the number of vert/horiz spaces away a tile is from its solution.
+
+        for each tile:
+            Manhattan Distance = (row diff + col diff)
+            col diff = tileValue div 3 - tileIndex div 3
+            tow diff = tileValue mod 3 - tileIndex mod 3
+        '''
+        sum : int = 0
+        for i in range(0, len(state)):
+            # tile value
+            tv : int = int(state[i])
+            # Manhattan Distance = (row diff + col diff)
+            md : int = abs((tv // 3) - (i // 3)) + abs((tv % 3) - (i % 3))
+            sum += md
+        return md
+    
+    @staticmethod
+    def displacedCount(state: str) -> int:
+        ''' return the count of tiles which are displaced at all
+        '''
+        cnt : int = 0
+        for i in range(0, len(state)):
+            if state[i] != i:
+                cnt += 1
+        return cnt

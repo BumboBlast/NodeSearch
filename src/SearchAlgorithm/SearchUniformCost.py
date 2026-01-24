@@ -68,7 +68,7 @@ class UniformCost(Solver):
     def search(self) -> Node | None:
         ''' See src/SearchBreadthFirst.py
         '''
-        print('Unifrome-Cost (:')
+        print('Uniform-Cost (:')
 
         # check if this is solvable
         if not self.problem.is_solvable():
