@@ -10,6 +10,7 @@ from SearchAlgorithm.SearchDepthLimited import DepthLimited
 from SearchAlgorithm.SearchIterativeDeepening import IterativeDeepening
 from SearchAlgorithm.SearchBidirectional import Bidirection
 from SearchAlgorithm.SearchUniformCost import UniformCost
+from SearchAlgorithm.SearchBestFirst import BestFirst
 from MemoryTracking import track
 
 import sys
@@ -56,6 +57,7 @@ search_algorithms: dict = {
     'iterative-deepening': IterativeDeepening,
     'bidirectional' : Bidirection,
     'uniform-cost' : UniformCost,
+    "best-first" : BestFirst
 }
 
 
