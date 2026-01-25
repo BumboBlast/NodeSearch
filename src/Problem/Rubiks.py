@@ -530,9 +530,12 @@ class Rubiks(Problem):
         return cnt
     
     @staticmethod
-    def manhattanDistance3D(state: str) -> int:
-        ''' return the manhattandistance for the 8 corner cubies. sum then divided by 4.
-            only really able to be implemented if Rubiks was imeplmented as a structure of "cubies" instead of faces
+    def korfHeuristic(state: str) -> float:
+        ''' only really able to be implemented if Rubiks was imeplmented as a structure of "cubies" instead of faces
+            return the MAX(
+            manhattandistance for the 8 corner cubies. sum then divided by 4.,
+            manhattandisstance for the 12 edge cubies. sum then dvidied by 4.
+            
 
                         50  51  52
                         53  54  55
@@ -587,15 +590,126 @@ class Rubiks(Problem):
         # get cubie representation of this state
         this_cubie_state = get_cubie_representation(state)
 
-        print(solution_cubie_state)
-        print(this_cubie_state)
+        # print(solution_cubie_state)
+        # print(this_cubie_state)
         # calcuate 3d manhattan distance for each corner cubie to its solution state
-        cube1_index = 0
-        sol_cubie = solution_cubie_state[cube1_index]
+        corner_cubie_ndxs = [0, 2, 6, 8, 18, 20, 24, 26]
+        manhattan_distance_corner_sum : int = 0
+        for cn in corner_cubie_ndxs:
+            # find where solution cubie is in this_state
+            sol_cubie = solution_cubie_state[cn]
+            star_ndx : int = this_cubie_state.index(sol_cubie)
 
-        # find where solution cube 1 is in this_state
-        print(this_cubie_state.index(sol_cubie))
+            # calculate this cubies manahttan distance
+            rd : int = abs(((star_ndx // 3) % 3) - ((cn // 3) % 3))
+            cd : int = abs((star_ndx % 3) - (cn % 3))
+            ld : int = abs((star_ndx // 9) - (cn // 9))
+            md : int = rd + cd + ld
+            manhattan_distance_corner_sum += md
+
+        # calcuate 3d manhattan distance for each EDGE cubie to its solution state
+        edge_cubie_ndxs = [1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25]
+        manhattan_distance_edge_sum : int = 0
+        for cn in corner_cubie_ndxs:
+            # find where solution cubie is in this_state
+            sol_cubie = solution_cubie_state[cn]
+            star_ndx : int = this_cubie_state.index(sol_cubie)
+
+            # calculate this cubies manahttan distance
+            rd : int = abs(((star_ndx // 3) % 3) - ((cn // 3) % 3))
+            cd : int = abs((star_ndx % 3) - (cn % 3))
+            ld : int = abs((star_ndx // 9) - (cn // 9))
+            md : int = rd + cd + ld
+            manhattan_distance_edge_sum += md
+
+        manhattan_distance_corner_sum /= 4
+        manhattan_distance_edge_sum /= 4
+        korfH = max(manhattan_distance_corner_sum, manhattan_distance_edge_sum)
+        
+        # print(state)
+        # print(f"korfH for this state:{korfH}")
+        # sys.exit()
+        return korfH
+    
+    @staticmethod
+    def manhattanDistance(state: str) -> float:
+        ''' only really able to be implemented if Rubiks was imeplmented as a structure of "cubies" instead of faces
+            return the sum of manhattan distance for all cubies divided by 8
+            
+
+                        50  51  52
+                        53  54  55
+                        56  57  58
+                        30  31  32
+                        33  34  35
+                        36  37  38
+               20 21 22 00  01  02 40 41 42
+               23 24 25 03  04  05 43 44 45
+               26 27 28 06  07  08 46 47 48
+                        10  11  12
+                        13  14  15
+                        16  17  18
+        '''
+        def get_cubie_representation(od_state: str) -> list:
+            return [
+                set([od_state[0], od_state[22], od_state[36]]), # corner 1
+                set([od_state[1], od_state[37]]),
+                set([od_state[2], od_state[40], od_state[38],]), # corner 2
+                set([od_state[3], od_state[25]]),
+                set([od_state[4]]),
+                set([od_state[5], od_state[43]]),
+                set([od_state[6], od_state[10], od_state[28]]), # corner 3
+                set([od_state[7], od_state[11]]),
+                set([od_state[8], od_state[46], od_state[12]]), # corner 4
 
 
-        sys.exit()
-        return 1
+                set([od_state[21], od_state[33]]),
+                set([od_state[34]]),
+                set([od_state[35], od_state[41]]),
+                set([od_state[24]]),
+                set([]), # center is empty
+                set([od_state[44]]),
+                set([od_state[13], od_state[27]]),
+                set([od_state[14]]),
+                set([od_state[15], od_state[47]]),
+
+
+                set([od_state[50], od_state[26], od_state[16]]), # corner 5
+                set([od_state[51], od_state[17]]),
+                set([od_state[52], od_state[18], od_state[48],]), # corner 6
+                set([od_state[53], od_state[23]]),
+                set([od_state[54]]),
+                set([od_state[55], od_state[45]]),
+                set([od_state[56], od_state[30], od_state[20]]), # corner 7
+                set([od_state[57], od_state[31]]),
+                set([od_state[58], od_state[42], od_state[32]]), # corner 8
+            ]
+        # get cubie representation of solution state
+        solution_cubie_state = get_cubie_representation(Rubiks.DEFAULT_STATE)
+
+        # get cubie representation of this state
+        this_cubie_state = get_cubie_representation(state)
+
+        # print(solution_cubie_state)
+        # print(this_cubie_state)
+        # calcuate 3d manhattan distance for each corner cubie to its solution state
+        cubie_indices : list = list(range(0, len(this_cubie_state)))
+        manhattan_distance_cubie_sum : int = 0
+        for cn in cubie_indices:
+            # find where solution cubie is in this_state
+            sol_cubie = solution_cubie_state[cn]
+            star_ndx : int = this_cubie_state.index(sol_cubie)
+
+            # calculate this cubies manahttan distance
+            rd : int = abs(((star_ndx // 3) % 3) - ((cn // 3) % 3))
+            cd : int = abs((star_ndx % 3) - (cn % 3))
+            ld : int = abs((star_ndx // 9) - (cn // 9))
+            md : int = rd + cd + ld
+            manhattan_distance_cubie_sum += md
+
+        manhattan_distance_cubie_sum /= 8
+        
+        # print(state)
+        # print(f"korfH for this state:{manhattan_distance_cubie_sum}")
+        # sys.exit()
+        return manhattan_distance_cubie_sum
