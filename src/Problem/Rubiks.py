@@ -83,7 +83,7 @@ class Rubiks(Problem):
         self.initial_state = init_state
         self.solution_state = Rubiks.DEFAULT_STATE
         if init_state == list():
-            self.initial_state = self.gen_random_solvable_state(self.solution_state, depth=4)
+            self.initial_state = self.gen_random_solvable_state(self.solution_state, depth=6)
             # self.initial_state = Rubiks.DEFAULT_STATE
 
     def get_state(self, state) -> object:
@@ -535,6 +535,20 @@ class Rubiks(Problem):
             return the MAX(
             manhattandistance for the 8 corner cubies. sum then divided by 4.,
             manhattandisstance for the 12 edge cubies. sum then dvidied by 4.
+
+            !!!!!! NOTE ON MANHATTAN DISTANCE !!!!!!!
+            this is probably wrong vvv . because it doesnt take into account orientation ):
+            manhattandistance here actually means how many TURNS for a cubie to reach its destination
+
+            i was able to prove (atleast in my head lol) that corner cubies take manhattandistance / 2 turns
+            to reach their destination. Edges are slightly more complicated but i worked this out:
+
+            an edge cubie can share 0, 1, or 2 axes with its destination cubie. if it shared all 3, it would be the same cubie.
+            if it shares 2 axes, it takes 2 turns to reach destination
+            if it shares 1 axis, it takes 1 turn to reach destination (its on the same face)
+                except in the case where the axis that is shared is either a middle column or row, because rotating the center
+                is not a legal action. in this case it takes 4 turns??
+            if it shares 0 axis, it takes 1 or 2 turns to reach destination?
             
 
                         50  51  52
@@ -605,7 +619,7 @@ class Rubiks(Problem):
             cd : int = abs((star_ndx % 3) - (cn % 3))
             ld : int = abs((star_ndx // 9) - (cn // 9))
             md : int = rd + cd + ld
-            manhattan_distance_corner_sum += md
+            manhattan_distance_corner_sum += (md / 2)
 
         # calcuate 3d manhattan distance for each EDGE cubie to its solution state
         edge_cubie_ndxs = [1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25]
@@ -629,6 +643,7 @@ class Rubiks(Problem):
         # print(state)
         # print(f"korfH for this state:{korfH}")
         # sys.exit()
+        return manhattan_distance_corner_sum
         return korfH
     
     @staticmethod

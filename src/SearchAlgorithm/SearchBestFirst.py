@@ -44,7 +44,6 @@ class BestFirst(Solver):
         if evaluating_function_input in methods_list:
             self.evaluating_function = getattr(self.problem, evaluating_function_input)
         else:
-            print(dir(self.problem))
             self.evaluating_function = default_evaluating
 
         #initialize frontier and explored (both unique)
@@ -84,18 +83,18 @@ class BestFirst(Solver):
 
 
                 ''' TODO: do i needthis?? '''
-            elif child.state in self.frontierLKP:
-                # check if this node is better than an existing frontier node
-                # replace that frontier node with child
-                if self.frontierLKP[child.state][-1].path_cost > child.path_cost:
-                    # remove from heap and dict
-                    removed_entry = self.frontierLKP.pop(child.state)
-                    removed_entry[-1] = REMOVED
+            # elif child.state in self.frontierLKP:
+            #     # check if this node is better than an existing frontier node
+            #     # replace that frontier node with child
+            #     if self.frontierLKP[child.state][-1].path_cost > child.path_cost:
+            #         # remove from heap and dict
+            #         removed_entry = self.frontierLKP.pop(child.state)
+            #         removed_entry[-1] = REMOVED
                     
-                    # add new cheaper child node to heap and dict
-                    heap_entry : list = [child_evaluation, next(self.insert_order), child]
-                    heapq.heappush(self.heapFrontier, heap_entry)
-                    self.frontierLKP[child.state] = heap_entry
+            #         # add new cheaper child node to heap and dict
+            #         heap_entry : list = [child_evaluation, next(self.insert_order), child]
+            #         heapq.heappush(self.heapFrontier, heap_entry)
+            #         self.frontierLKP[child.state] = heap_entry
 
             # case when new node is IN EXPLORED but not in frontier
             # means ive already seen this node, can ignore
@@ -122,12 +121,13 @@ class BestFirst(Solver):
 
             # node ← POP(frontier) /* chooses the lowest-cost node in frontier */
             # remove from both heap and frontier
-            while self.heapFrontier:
+            chosen_leaf  = heapq.heappop(self.heapFrontier)[-1]
+            while chosen_leaf == REMOVED:
                 priority, insert_id, task = heapq.heappop(self.heapFrontier)
                 if task is not REMOVED:
                     del self.frontierLKP[task.state]
-                    chosen_leaf : Node = task
-                    break
+                    chosen_leaf = task
+                    # break
 
             # if problem.GOAL-TEST(node.STATE) then return SOLUTION(node)
             if chosen_leaf.state == self.problem.solution_state:

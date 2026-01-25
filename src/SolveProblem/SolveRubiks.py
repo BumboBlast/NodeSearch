@@ -70,6 +70,7 @@ def getSomePuzzles() -> list:
         6, 6, 6,
         1, 1, 1
     ]))
+    puzzleList.append(Rubiks("11421455601132236620223133214054654644605555524430331366162"))
     puzzleList.append(Rubiks(Rubiks.DEFAULT_STATE))
     return puzzleList
 
@@ -114,7 +115,7 @@ search_algorithms: dict = {
 def solve_Rubiks():
 
     # get problem
-    problem: Rubiks = getSomePuzzles()[0]
+    problem: Rubiks = getSomePuzzles()[-2]
 
     # get solver object and user argument
     user_arg : str = None
