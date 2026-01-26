@@ -70,7 +70,8 @@ def getSomePuzzles() -> list:
         6, 6, 6,
         1, 1, 1
     ]))
-    puzzleList.append(Rubiks("11421455601132236620223133214054654644605555524430331366162"))
+    puzzleList.append(Rubiks("11421455601132236620223133214054654644605555524430331366162")) # solution is 7 nodes long
+                                                                                            # uniform-cost in 1m30s, 1gb ram
     puzzleList.append(Rubiks(Rubiks.DEFAULT_STATE))
     return puzzleList
 
