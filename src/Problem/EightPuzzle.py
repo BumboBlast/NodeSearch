@@ -137,16 +137,31 @@ class EightPuzzle(Problem):
         strlst[blank_ndx], strlst[left_ndx] = strlst[left_ndx], strlst[blank_ndx]
         return "".join(strlst)
 
+    @classmethod
+    def moveRight(cls, this_state: str) -> str:
+        ''' Swap blank with the tile on the right
+            if right is O.B., return this-state
+            index of RIGHT tile is same row, +1 column
+        ''' 
+        blank_ndx : int = this_state.index(cls.BLANK)
+        blank_row : int = blank_ndx // cls.dimensions[1] # num cols
+        blank_col : int = blank_ndx % cls.dimensions[0] # num rows
 
-    @staticmethod
-    def moveRight(this_state : str) -> object:
-        '''Swap blank with the tile on the right
-        '''
-        _split: list = this_state.split(EightPuzzle.BLANK)
-        if (len(_split[0]) % EightPuzzle.DIMENSIONS[1]) == (EightPuzzle.DIMENSIONS[1] - 1): return this_state
-        _rightChar: str = _split[1][0]
-        new_state: str = _split[0] + _rightChar + EightPuzzle.BLANK + _split[1][1:]
-        return new_state
+        # if blank already in left column. - 1 because 0 indexed
+        if blank_col == cls.dimensions[1] - 1:
+            return this_state
+
+        # which number [0 .. n] is b div N  AND (b mod N) + 1
+        left_ndx : int = -1
+        for i in range(0, len(this_state)):
+            if cls.row_convert[i] == blank_row and cls.col_convert[i] == blank_col + 1:
+                left_ndx = i
+        
+        # swap blankndx and leftndx
+        strlst = list(this_state)
+        strlst[blank_ndx], strlst[left_ndx] = strlst[left_ndx], strlst[blank_ndx]
+        return "".join(strlst)
+
 
     @staticmethod
     def moveUp(this_state : str) -> object:
