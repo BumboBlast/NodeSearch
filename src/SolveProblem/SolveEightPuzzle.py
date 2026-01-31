@@ -19,8 +19,10 @@ import sys
 def getSomePuzzles() -> list:
     puzzleList : list = list()
     puzzleList.append(EightPuzzle()) # random puzzle
-    puzzleList.append(EightPuzzle('123456780'))
+    
     puzzleList.append(EightPuzzle('876543210'))
+    puzzleList.append(EightPuzzle('FEDCBA9876543210'))
+    puzzleList.append(EightPuzzle('123456780'))
     puzzleList.append(EightPuzzle('102345678'))
     puzzleList.append(EightPuzzle('376041825')) # impossible to solve, odd # of inversions
     puzzleList.append(EightPuzzle('402176583')) # impossible to solve, odd # of inversions
@@ -63,7 +65,7 @@ search_algorithms: dict = {
 
 def solve_EightPuzzle():
     # get problem
-    problem: EightPuzzle = getSomePuzzles()[0]
+    problem: EightPuzzle = getSomePuzzles()[1]
     problem.solution_state = '012345678' # hard coded probably in the wrong place
     Node.problem = problem
     

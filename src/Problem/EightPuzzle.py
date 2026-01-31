@@ -1,23 +1,42 @@
 from Problem.Problem import Problem
 from itertools import combinations, permutations
 import random
+import math
 
 class EightPuzzle(Problem):
     BLANK = '0'
-    DIMENSIONS = [3, 3]
     STATE_SPACE = '0123456789ABCDEFGHIKLMNOPRSTUVWXYZa'
-    def __init__(self, seed: str = ''):
-        # generate initial state from seed
-        super().__init__()
-        _perm: list = list(permutations(EightPuzzle.STATE_SPACE[: EightPuzzle.DIMENSIONS[0] * EightPuzzle.DIMENSIONS[1]]))
-        if seed:
-            self.initial_state = seed
-        else:
-            _seed_index = random.randint(0, len(_perm))
-            # convert tuple -> str
-            self.initial_state : str  = ''.join(list(_perm[_seed_index]))
-        self.dimensions = [3, 3]
 
+    # dynamic class attr
+    dimensions = [None, None]
+    row_convert : list = list()
+    col_convert : list = list()
+
+
+    def __init__(self, init_state: str = None):
+        super().__init__()
+        if init_state:
+            self.initial_state = init_state
+        else:
+            self.initial_state = self.get_random_state()
+        
+        # dynamic class attr
+        EightPuzzle.dimensions[0] = int(math.sqrt(len(self.initial_state)))
+        EightPuzzle.dimensions[1] = int(math.sqrt(len(self.initial_state)))
+        EightPuzzle.row_convert  = [i // EightPuzzle.dimensions[1] for i in range(0, EightPuzzle.dimensions[0] * EightPuzzle.dimensions[1])]
+        EightPuzzle.col_convert  = [i % EightPuzzle.dimensions[0] for i in range(0, EightPuzzle.dimensions[0] * EightPuzzle.dimensions[1])]
+
+        # instance attr (might as well be class)
+        self.solution_state = EightPuzzle.STATE_SPACE[0 : EightPuzzle.dimensions[0] * EightPuzzle.dimensions[1]]
+
+    def get_random_state(self) -> str:
+        ''' quickly generate a random state with given dimensions
+        '''
+        ls_state_space : list = list(EightPuzzle.STATE_SPACE[0 : EightPuzzle.DIMENSIONS[0] * EightPuzzle.DIMENSIONS[1]])
+        random.shuffle(ls_state_space)
+        random_state : str = "".join( x for x in ls_state_space)
+        return random_state
+            
     def get_actions(self, state) -> list:
         ''' each state, you can move any direction 
             if you try to move into the wall, just returns arg state
@@ -53,12 +72,25 @@ class EightPuzzle(Problem):
         if inversions are even, then solvable.
         [] currently assumes solution is '012345678', blank tile is '0', and all values are numbers
         '''
-        inversions : int = 0
-        pairs : list = list(combinations(self.initial_state, 2))
-        for p in pairs:
-            if p[1] < p[0] and '0' not in [p[0], p[1]]:
-                inversions += 1
-        return inversions % 2 == 0
+
+        if EightPuzzle.DIMENSIONS[0] == 3:
+
+            inversions : int = 0
+            pairs : list = list(combinations(self.initial_state, 2))
+            for p in pairs:
+                if p[1] < p[0] and '0' not in [p[0], p[1]]:
+                    inversions += 1
+            print(f"solvable?: {str(bool(inversions % 2 == 0))}")
+            return inversions % 2 == 0
+        
+        elif EightPuzzle.DIMENSIONS[0] == 4:
+            inversions : int = 0
+            pairs : list = list(combinations(self.initial_state, 2))
+            for p in pairs:
+                if p[1] < p[0] and '0' not in [p[0], p[1]]:
+                    inversions += 1
+            empty_space_row = (self.initial_state.index(EightPuzzle.BLANK) // EightPuzzle.DIMENSIONS[0]) # 4
+            return (inversions + empty_space_row) % 2 == 0
 
     @staticmethod
     def print_state(state: str, short: bool = False) -> str:
@@ -80,15 +112,32 @@ class EightPuzzle(Problem):
 
     '''Eight Puzzle Actions - Corresponding to moving the "space" tile
     '''    
-    @staticmethod
-    def moveLeft(this_state : str) -> object:
-        '''Swap blank with the tile on the left
-        '''
-        _split: list = this_state.split(EightPuzzle.BLANK)
-        if (len(_split[0]) % EightPuzzle.DIMENSIONS[1] == 0) or (this_state.find(EightPuzzle.BLANK) == -1):
+    @classmethod
+    def moveLeft(cls, this_state: str) -> str:
+        ''' Swap blank with the tile on the left
+            if left is O.B., return this-state
+            index of LEFT tile is same row, -1 column
+        ''' 
+        blank_ndx : int = this_state.index(cls.BLANK)
+        blank_row : int = blank_ndx // cls.dimensions[1] # num cols
+        blank_col : int = blank_ndx % cls.dimensions[0] # num rows
+
+        # if blank already in left column
+        if blank_col == 0:
             return this_state
-        _leftChar: str = _split[0][-1]
-        return _split[0][:-1] + EightPuzzle.BLANK + _leftChar + _split[1]
+
+        # which number [0 .. n] is b div N  AND (b mod N) - 1
+        left_ndx : int = -1
+        for i in range(0, len(this_state)):
+            if cls.row_convert[i] == blank_row and cls.col_convert[i] == blank_col - 1:
+                left_ndx = i
+        
+        # swap blankndx and leftndx
+        strlst = list(this_state)
+        strlst[blank_ndx], strlst[left_ndx] = strlst[left_ndx], strlst[blank_ndx]
+        return "".join(strlst)
+
+
     @staticmethod
     def moveRight(this_state : str) -> object:
         '''Swap blank with the tile on the right
@@ -98,6 +147,7 @@ class EightPuzzle(Problem):
         _rightChar: str = _split[1][0]
         new_state: str = _split[0] + _rightChar + EightPuzzle.BLANK + _split[1][1:]
         return new_state
+
     @staticmethod
     def moveUp(this_state : str) -> object:
         '''Swap blank with the tile above
@@ -108,6 +158,7 @@ class EightPuzzle(Problem):
         new_state: str = this_state[:_upIndex] + EightPuzzle.BLANK + this_state[_upIndex+1:_blankIndex] \
             + this_state[_upIndex] + this_state[_blankIndex+1:]
         return new_state
+
     @staticmethod
     def moveDown(this_state : str) -> str:
         '''Swap blank with the tile below

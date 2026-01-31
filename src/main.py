@@ -31,9 +31,13 @@ def dbg():
     from SearchAlgorithm.SearchBreadthFirst import BrFS
     from Node import Node
     from SearchAlgorithm.Solver import Solver
+    from Problem.EightPuzzle import EightPuzzle
 
-    r : Rubiks = Rubiks()
-    print(r.initial_state)
+    e = EightPuzzle('0123456789ABCDEF')
+
+    print(e.initial_state)
+    print(EightPuzzle.moveLeft(e.initial_state))
+    
 
     print("END dbg")
 
