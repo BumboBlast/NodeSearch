@@ -63,7 +63,7 @@ search_algorithms: dict = {
 
 def solve_EightPuzzle():
     # get problem
-    problem: EightPuzzle = getSomePuzzles()[2]
+    problem: EightPuzzle = getSomePuzzles()[0]
     problem.solution_state = '012345678' # hard coded probably in the wrong place
     Node.problem = problem
     

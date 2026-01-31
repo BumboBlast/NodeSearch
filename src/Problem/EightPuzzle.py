@@ -5,10 +5,11 @@ import random
 class EightPuzzle(Problem):
     BLANK = '0'
     DIMENSIONS = [3, 3]
+    STATE_SPACE = '0123456789ABCDEFGHIKLMNOPRSTUVWXYZa'
     def __init__(self, seed: str = ''):
         # generate initial state from seed
         super().__init__()
-        _perm: list = list(permutations('012345678'))
+        _perm: list = list(permutations(EightPuzzle.STATE_SPACE[: EightPuzzle.DIMENSIONS[0] * EightPuzzle.DIMENSIONS[1]]))
         if seed:
             self.initial_state = seed
         else:
