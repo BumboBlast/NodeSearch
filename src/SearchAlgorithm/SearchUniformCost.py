@@ -111,7 +111,7 @@ class UniformCost(Solver):
         if not self.problem.is_solvable():
             return None
 
-        plsHalt = 1_000_000
+        plsHalt = 10_000_000
         while (plsHalt > 0):
             plsHalt -= 1
 
@@ -141,6 +141,6 @@ class UniformCost(Solver):
             # expand frontier
             self.expandFrontier(chosen_leaf)
 
-            if len(self.heapFrontier) % 1_000 == 0:
+            if len(self.heapFrontier) % 10_000 == 0:
                 print('size of frontier: ' + str(len(self.heapFrontier)), end='\r')
  

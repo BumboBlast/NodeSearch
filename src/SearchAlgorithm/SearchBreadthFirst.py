@@ -61,7 +61,7 @@ class BrFS(Solver):
         if not self.problem.is_solvable():
             return None
 
-        plsHalt = 10_000_000
+        plsHalt = 100_000_000
         while (plsHalt > 0):
             plsHalt -= 1
             # if the frontier is empty then return failure
@@ -87,6 +87,7 @@ class BrFS(Solver):
             # only if not in the frontier or explored set (coverd in genFrontier)
             self.expandFrontier(chosenLeaf)
             
-            if len(self.qFrontier) % 10_000 == 0:
+            if len(self.qFrontier) % 100_000 == 0:
+                # print(f"pls halt: {plsHalt}, size of frontier: {str(len(self.qFrontier))}")
                 print('size of frontier: ' + str(len(self.qFrontier)), end='\r')
         print('\n')

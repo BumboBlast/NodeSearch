@@ -22,6 +22,7 @@ def getSomePuzzles() -> list:
     puzzleList.append('876543210')
     puzzleList.append('FEDCBA9876543210') # idk if solvable
     puzzleList.append('8736F190EBD24CA5') # probably solvable
+    puzzleList.append('412359678DB0CEAF') # solvable
     puzzleList.append('123456780')
     puzzleList.append('102345678')
     puzzleList.append('376041825') # impossible to solve, odd # of inversions
@@ -65,7 +66,7 @@ search_algorithms: dict = {
 
 def solve_EightPuzzle():
     # get problem
-    problem: EightPuzzle = EightPuzzle(getSomePuzzles()[2])
+    problem: EightPuzzle = EightPuzzle(getSomePuzzles()[3])
     Node.problem = problem
     
     # get solver object and user argument
@@ -74,6 +75,7 @@ def solve_EightPuzzle():
     try:
         user_arg : str = sys.argv[2]
         solver = search_algorithms[user_arg](problem)
+        print(f"solution was: {problem.solution_state}")
     except Exception as e:
         tb = traceback.format_exc()
         print(tb)

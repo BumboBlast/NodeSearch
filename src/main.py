@@ -35,8 +35,9 @@ def dbg():
 
     e = EightPuzzle('FEDCBA9876543210')
 
-    print(e.initial_state)
-    print(EightPuzzle.moveRight(e.initial_state))
+    ns = e.gen_random_solvable_state('0123456789ABCDEF', 10)
+
+    print(ns)
     
 
     print("END dbg")

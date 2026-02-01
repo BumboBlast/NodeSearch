@@ -70,26 +70,42 @@ class EightPuzzle(Problem):
         ''' Counts inversions for self.initial_state
         an inversion is a pair of tiles in reverse order
         if inversions are even, then solvable.
-        [] currently assumes solution is '012345678', blank tile is '0', and all values are numbers
         '''
-
         if EightPuzzle.dimensions[0] == 3:
-
             inversions : int = 0
             pairs : list = list(combinations(self.initial_state, 2))
             for p in pairs:
                 if p[1] < p[0] and '0' not in [p[0], p[1]]:
                     inversions += 1
             return inversions % 2 == 0
-        
+
+        # parity of each square AND parity of manhattan distance of empty space
         elif EightPuzzle.dimensions[0] == 4:
             inversions : int = 0
-            pairs : list = list(combinations(self.initial_state, 2))
+            # convert 0 1 2 .. A B C .. F -> 0 1 2 .. 10 11 12 .. 16
+            value_convert : dict = {
+                'A' : 10,
+                'B' : 11,
+                'C' : 12,
+                'D' : 13,
+                'E' : 14,
+                'F' : 15,
+            }
+            value_list : list = list()
+            for a in self.initial_state:
+                if a in value_convert:
+                    value_list.append(value_convert[a])
+                else:
+                    value_list.append(int(a))
+            # count inversions
+            pairs : list = list(combinations(value_list, 2))
             for p in pairs:
                 if p[1] < p[0] and '0' not in [p[0], p[1]]:
                     inversions += 1
-            empty_space_row = (self.initial_state.index(EightPuzzle.BLANK) // EightPuzzle.dimensions[0]) # 4
-            return (inversions + empty_space_row) % 2 == 0
+            # taxicab distance / manhattan distance of empty index to solution space
+            empty_space_index = self.initial_state.index(self.BLANK)
+            empty_manhattan_d = empty_space_index % 4 + empty_space_index // 4
+            return inversions % 2 == empty_manhattan_d % 2
 
     @staticmethod
     def print_state(state: str, short: bool = False) -> str:
@@ -231,11 +247,30 @@ class EightPuzzle(Problem):
             tow diff = tileValue mod 3 - tileIndex mod 3
         '''
         sum : int = 0
-        for i in range(0, len(state)):
+        num_cols : int = EightPuzzle.dimensions[0]
+        num_rows : int = EightPuzzle.dimensions[1]
+
+        # convert 0 1 2 .. A B C .. F -> 0 1 2 .. 10 11 12 .. 16
+        value_convert : dict = {
+            'A' : 10,
+            'B' : 11,
+            'C' : 12,
+            'D' : 13,
+            'E' : 14,
+            'F' : 15,
+        }
+        value_list : list = list()
+        for a in state:
+            if a in value_convert:
+                value_list.append(value_convert[a])
+            else:
+                value_list.append(int(a))
+        # find manhattan distance for each tile in this state
+        for i in range(0, len(value_list)):
             # tile value
-            tv : int = int(state[i])
+            tv : int = int(value_list[i])
             # Manhattan Distance = (row diff + col diff)
-            md : int = abs((tv // 3) - (i // 3)) + abs((tv % 3) - (i % 3))
+            md : int = abs((tv // num_cols) - (i // num_cols)) + abs((tv % num_rows) - (i % num_rows))
             sum += md
         return md
     
@@ -243,8 +278,24 @@ class EightPuzzle(Problem):
     def displacedCount(state: str) -> int:
         ''' return the count of tiles which are displaced at all
         '''
+        # convert 0 1 2 .. A B C .. F -> 0 1 2 .. 10 11 12 .. 16
+        value_convert : dict = {
+            'A' : 10,
+            'B' : 11,
+            'C' : 12,
+            'D' : 13,
+            'E' : 14,
+            'F' : 15,
+        }
+        value_list : list = list()
+        for a in state:
+            if a in value_convert:
+                value_list.append(value_convert[a])
+            else:
+                value_list.append(int(a))
+        # find num of displaced tiles
         cnt : int = 0
-        for i in range(0, len(state)):
+        for i in range(0, len(value_list)):
             if state[i] != i:
                 cnt += 1
         return cnt
