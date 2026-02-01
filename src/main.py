@@ -33,10 +33,10 @@ def dbg():
     from SearchAlgorithm.Solver import Solver
     from Problem.EightPuzzle import EightPuzzle
 
-    e = EightPuzzle('0123456789ABCDEF')
+    e = EightPuzzle('FEDCBA9876543210')
 
     print(e.initial_state)
-    print(EightPuzzle.moveDown(e.initial_state))
+    print(EightPuzzle.moveRight(e.initial_state))
     
 
     print("END dbg")

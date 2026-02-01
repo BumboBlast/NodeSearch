@@ -18,14 +18,14 @@ import sys
 ''' puzzles '''
 def getSomePuzzles() -> list:
     puzzleList : list = list()
-    puzzleList.append(EightPuzzle()) # random puzzle
-    
-    puzzleList.append(EightPuzzle('876543210'))
-    puzzleList.append(EightPuzzle('FEDCBA9876543210'))
-    puzzleList.append(EightPuzzle('123456780'))
-    puzzleList.append(EightPuzzle('102345678'))
-    puzzleList.append(EightPuzzle('376041825')) # impossible to solve, odd # of inversions
-    puzzleList.append(EightPuzzle('402176583')) # impossible to solve, odd # of inversions
+    puzzleList.append(None) # random puzzle
+    puzzleList.append('876543210')
+    puzzleList.append('FEDCBA9876543210') # idk if solvable
+    puzzleList.append('8736F190EBD24CA5') # probably solvable
+    puzzleList.append('123456780')
+    puzzleList.append('102345678')
+    puzzleList.append('376041825') # impossible to solve, odd # of inversions
+    puzzleList.append('402176583') # impossible to solve, odd # of inversions
     return puzzleList
 
 @track
@@ -65,8 +65,7 @@ search_algorithms: dict = {
 
 def solve_EightPuzzle():
     # get problem
-    problem: EightPuzzle = getSomePuzzles()[1]
-    problem.solution_state = '012345678' # hard coded probably in the wrong place
+    problem: EightPuzzle = EightPuzzle(getSomePuzzles()[2])
     Node.problem = problem
     
     # get solver object and user argument

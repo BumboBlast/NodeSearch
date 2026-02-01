@@ -8,7 +8,7 @@ class EightPuzzle(Problem):
     STATE_SPACE = '0123456789ABCDEFGHIKLMNOPRSTUVWXYZa'
 
     # dynamic class attr
-    dimensions = [None, None]
+    dimensions = [3, 3]
     row_convert : list = list()
     col_convert : list = list()
 
@@ -32,7 +32,7 @@ class EightPuzzle(Problem):
     def get_random_state(self) -> str:
         ''' quickly generate a random state with given dimensions
         '''
-        ls_state_space : list = list(EightPuzzle.STATE_SPACE[0 : EightPuzzle.DIMENSIONS[0] * EightPuzzle.DIMENSIONS[1]])
+        ls_state_space : list = list(EightPuzzle.STATE_SPACE[0 : EightPuzzle.dimensions[0] * EightPuzzle.dimensions[1]])
         random.shuffle(ls_state_space)
         random_state : str = "".join( x for x in ls_state_space)
         return random_state
@@ -73,23 +73,22 @@ class EightPuzzle(Problem):
         [] currently assumes solution is '012345678', blank tile is '0', and all values are numbers
         '''
 
-        if EightPuzzle.DIMENSIONS[0] == 3:
+        if EightPuzzle.dimensions[0] == 3:
 
             inversions : int = 0
             pairs : list = list(combinations(self.initial_state, 2))
             for p in pairs:
                 if p[1] < p[0] and '0' not in [p[0], p[1]]:
                     inversions += 1
-            print(f"solvable?: {str(bool(inversions % 2 == 0))}")
             return inversions % 2 == 0
         
-        elif EightPuzzle.DIMENSIONS[0] == 4:
+        elif EightPuzzle.dimensions[0] == 4:
             inversions : int = 0
             pairs : list = list(combinations(self.initial_state, 2))
             for p in pairs:
                 if p[1] < p[0] and '0' not in [p[0], p[1]]:
                     inversions += 1
-            empty_space_row = (self.initial_state.index(EightPuzzle.BLANK) // EightPuzzle.DIMENSIONS[0]) # 4
+            empty_space_row = (self.initial_state.index(EightPuzzle.BLANK) // EightPuzzle.dimensions[0]) # 4
             return (inversions + empty_space_row) % 2 == 0
 
     @staticmethod
@@ -102,9 +101,9 @@ class EightPuzzle(Problem):
             return state
         ret_str : str = str()
         _iter : int = 0
-        for _ in range(0, EightPuzzle.DIMENSIONS[0]):
+        for _ in range(0, EightPuzzle.dimensions[0]):
             row : list = list()
-            for _ in range(0, EightPuzzle.DIMENSIONS[1]):
+            for _ in range(0, EightPuzzle.dimensions[1]):
                 row.append(state[_iter])
                 _iter += 1
             ret_str += str(row) + '\n'
@@ -144,6 +143,7 @@ class EightPuzzle(Problem):
             if right is O.B., return this-state
             index of RIGHT tile is same row, +1 column
         ''' 
+
         blank_ndx : int = this_state.index(cls.BLANK)
         blank_row : int = blank_ndx // cls.dimensions[1] # num cols
         blank_col : int = blank_ndx % cls.dimensions[0] # num rows
@@ -189,18 +189,6 @@ class EightPuzzle(Problem):
         strlst = list(this_state)
         strlst[blank_ndx], strlst[up_ndx] = strlst[up_ndx], strlst[blank_ndx]
         return "".join(strlst)
-
-    # @staticmethod
-    # def moveDown(this_state : str) -> str:
-    #     '''Swap blank with the tile below
-    #     '''
-    #     _blankIndex = this_state.find(EightPuzzle.BLANK)
-    #     _downIndex = _blankIndex + EightPuzzle.DIMENSIONS[1]
-    #     if _downIndex >= len(this_state): return this_state
-        
-    #     new_state: str = this_state[:_blankIndex] + this_state[_downIndex] + this_state[_blankIndex+1:_downIndex]\
-    #           + EightPuzzle.BLANK + this_state[_downIndex+1:]
-    #     return new_state
 
     @classmethod
     def moveDown(cls, this_state: str) -> str:
