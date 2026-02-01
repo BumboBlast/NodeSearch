@@ -132,7 +132,7 @@ class EightPuzzle(Problem):
             if cls.row_convert[i] == blank_row and cls.col_convert[i] == blank_col - 1:
                 left_ndx = i
                 break
-                
+
         # swap blankndx and leftndx
         strlst = list(this_state)
         strlst[blank_ndx], strlst[left_ndx] = strlst[left_ndx], strlst[blank_ndx]
@@ -164,18 +164,6 @@ class EightPuzzle(Problem):
         strlst[blank_ndx], strlst[right_ndx] = strlst[right_ndx], strlst[blank_ndx]
         return "".join(strlst)
 
-
-    # @staticmethod
-    # def moveUp(this_state : str) -> object:
-    #     '''Swap blank with the tile above
-    #     '''
-    #     _blankIndex = this_state.find(EightPuzzle.BLANK)
-    #     _upIndex = _blankIndex - EightPuzzle.DIMENSIONS[1]
-    #     if _upIndex < 0: return this_state
-    #     new_state: str = this_state[:_upIndex] + EightPuzzle.BLANK + this_state[_upIndex+1:_blankIndex] \
-    #         + this_state[_upIndex] + this_state[_blankIndex+1:]
-    #     return new_state
-
     @classmethod
     def moveUp(cls, this_state: str) -> str:
         ''' Swap blank with the tile above
@@ -202,17 +190,44 @@ class EightPuzzle(Problem):
         strlst[blank_ndx], strlst[up_ndx] = strlst[up_ndx], strlst[blank_ndx]
         return "".join(strlst)
 
-    @staticmethod
-    def moveDown(this_state : str) -> str:
-        '''Swap blank with the tile below
-        '''
-        _blankIndex = this_state.find(EightPuzzle.BLANK)
-        _downIndex = _blankIndex + EightPuzzle.DIMENSIONS[1]
-        if _downIndex >= len(this_state): return this_state
+    # @staticmethod
+    # def moveDown(this_state : str) -> str:
+    #     '''Swap blank with the tile below
+    #     '''
+    #     _blankIndex = this_state.find(EightPuzzle.BLANK)
+    #     _downIndex = _blankIndex + EightPuzzle.DIMENSIONS[1]
+    #     if _downIndex >= len(this_state): return this_state
         
-        new_state: str = this_state[:_blankIndex] + this_state[_downIndex] + this_state[_blankIndex+1:_downIndex]\
-              + EightPuzzle.BLANK + this_state[_downIndex+1:]
-        return new_state
+    #     new_state: str = this_state[:_blankIndex] + this_state[_downIndex] + this_state[_blankIndex+1:_downIndex]\
+    #           + EightPuzzle.BLANK + this_state[_downIndex+1:]
+    #     return new_state
+
+    @classmethod
+    def moveDown(cls, this_state: str) -> str:
+        ''' Swap blank with the tile below
+            if down is O.B., return this-state
+            index of DOWN tile is same col, +1 row
+        ''' 
+        blank_ndx : int = this_state.index(cls.BLANK)
+        blank_row : int = blank_ndx // cls.dimensions[1] # num cols
+        blank_col : int = blank_ndx % cls.dimensions[0] # num rows
+
+        # if blank already in bottom row. - 1 because of 0 indexed 
+        if blank_row == cls.dimensions[0] - 1:
+            return this_state
+
+        # which number [0 .. n] is (b div N) - 1  AND b mod N
+        down_ndx : int = -1
+        for i in range(0, len(this_state)):
+            if cls.row_convert[i] == blank_row + 1 and cls.col_convert[i] == blank_col:
+                down_ndx = i
+                break
+        
+        # swap blankndx and leftndx
+        strlst = list(this_state)
+        strlst[blank_ndx], strlst[down_ndx] = strlst[down_ndx], strlst[blank_ndx]
+        return "".join(strlst)
+
 
     ''' ------------ Evaluating Functions as Heuristics ----------
     '''
